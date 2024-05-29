@@ -14,6 +14,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $primaryKey = 'user_id';
+
     protected $fillable = [
         'name', 'surname', 'email', 'password', 'birthdate', 'points', 'phone', 'role_id', 'remember_token', 'category'
     ];
@@ -25,6 +27,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+{
+    return $this->role_id === 1;
+}
+
 
     public function category()
     {

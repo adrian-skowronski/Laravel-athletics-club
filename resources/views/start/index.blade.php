@@ -81,7 +81,7 @@ text-shadow: 1px 1px 2px #000000;}
                 <div class="card-body">
                     <h5 class="card-title">Zawody</h5>
                     <p class="card-text">Zapoznaj się z kalendarzem zawodów</p>
-                    <a href="{{ route('events.index') }}" class="btn btn-primary">Więcej</a>
+                    <a href="{{ route('events.view') }}" class="btn btn-primary">Więcej</a>
                 </div>
             </div>
         </div>
@@ -91,7 +91,7 @@ text-shadow: 1px 1px 2px #000000;}
                 <div class="card-body">
                     <h5 class="card-title">Treningi</h5>
                     <p class="card-text">Zapoznaj się z kalendarzem treningów</p>
-                    <a href="{{ route('profile.edit') }}" class="btn btn-primary">Więcej</a>
+                    <a href="{{ route('trainings.view') }}" class="btn btn-primary">Więcej</a>
                 </div>
             </div>
         </div>

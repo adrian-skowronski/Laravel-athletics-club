@@ -35,11 +35,11 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Code -->
+        <!-- Birthdate -->
         <div class="mt-4">
-            <x-input-label for="code" :value="__('Kod')" />
-            <x-text-input id="code" class="block mt-1 w-full" type="text" name="code" :value="old('code')" required autocomplete="code" />
-            <x-input-error :messages="$errors->get('code')" class="mt-2" />
+            <x-input-label for="birthdate" :value="__('Data urodzenia')" />
+            <x-text-input id="birthdate" class="block mt-1 w-full" type="date" name="birthdate" :value="old('birthdate')" required autocomplete="birthdate" />
+            <x-input-error :messages="$errors->get('birthdate')" class="mt-2" />
         </div>
 
         <!-- Password -->

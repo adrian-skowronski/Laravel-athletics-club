@@ -10,9 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Training extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'training_id';
 
     protected $fillable = [
-        'trainer_id', 'date', 'start_time', 'end_time'
+        'description', 'date', 'start_time', 'end_time', 'trainer_id'
     ];
 
     public function trainer()

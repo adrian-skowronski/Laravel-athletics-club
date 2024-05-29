@@ -31,11 +31,11 @@
                 @auth
                     @if(auth()->user()->isAdmin())
                         <li class="nav-item">
-                            <a class="btn btn-link nav-link" href="{{ route('admin') }}">Panel Admina</a>
+                            <a class="btn btn-link nav-link" href="{{ route('admin.index') }}">Panel Admina</a>
                         </li>
                     @else
                         <li class="nav-item">
-                            <a class="btn btn-link nav-link" href="{{ route('customer') }}">Panel Użytknowika</a>
+                            <a class="btn btn-link nav-link" href="{{ route('admin.index') }}">Panel Sportowca popraw navbar</a>
                         </li>
                     @endif
                     <li class="nav-item">

@@ -24,11 +24,11 @@
                 @auth
                     @if(auth()->user()->isAdmin())
                         <li class="nav-item">
-                            <a class="btn btn-link nav-link" href="{{ route('admin') }}">Panel Admina</a>
+                            <a class="btn btn-link nav-link" href="{{ route('admin.index') }}">Panel Admina</a>
                         </li>
                     @else
                         <li class="nav-item">
-                            <a class="btn btn-link nav-link" href="{{ route('customer') }}">Panel Użytkownika</a>
+                            <a class="btn btn-link nav-link" href="{{ route('admin.index') }}">Panel Użytkownika</a>
                         </li>
                     @endif
                     <li class="nav-item">

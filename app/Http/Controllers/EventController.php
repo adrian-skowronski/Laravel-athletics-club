@@ -13,6 +13,11 @@ class EventController extends Controller
         return view('events.index', compact('events'));
     }
 
+     public function view()
+    {
+        $events = Event::all();
+        return view('events.view', compact('events'));
+    }
     public function create()
     {
         return view('events.create');
@@ -20,10 +25,14 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'date' => 'required|date',
-            'start_hour' => 'required',
+        $validatedData = $request->validate([
+        'name' => 'required|string|max:200',
+        'category' => 'nullable|string|max:255',
+        'age_from' => 'nullable|integer|min:0',
+        'age_to' => 'nullable|integer|min:' . $request->input('age_from'),
+        'description' => 'nullable|string|max:500',
+        'date' => 'required|date',
+        'start_hour' => 'required',
         ]);
 
         Event::create($request->all());
@@ -35,18 +44,25 @@ class EventController extends Controller
         return view('events.show', compact('event'));
     }
 
-    public function edit(Event $event)
+    public function edit($event_id)
     {
+        $event = Event::findOrFail($event_id);
         return view('events.edit', compact('event'));
     }
 
-    public function update(Request $request, Event $event)
+    public function update(Request $request, $event_id)
     {
-        $request->validate([
-            'name' => 'required',
-            'date' => 'required|date',
-            'start_hour' => 'required',
+        $validatedData = $request->validate([
+        'name' => 'required|string|max:200',
+        'category' => 'nullable|string|max:255',
+        'age_from' => 'nullable|integer|min:0',
+        'age_to' => 'nullable|integer|min:' . $request->input('age_from'),
+        'description' => 'nullable|string|max:500',
+        'date' => 'required|date',
+        'start_hour' => 'required',
         ]);
+
+        $event = Event::findOrFail($event_id);
 
         $event->update($request->all());
         return redirect()->route('events.index');

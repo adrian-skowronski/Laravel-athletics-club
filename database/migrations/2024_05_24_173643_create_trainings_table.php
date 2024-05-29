@@ -15,10 +15,10 @@ class CreateTrainingsTable extends Migration
     {
         Schema::create('trainings', function (Blueprint $table) {
             $table->id('training_id');
-            $table->string('name');
             $table->text('description')->nullable();
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->unsignedBigInteger('trainer_id');
             $table->foreign('trainer_id')->references('user_id')->on('users');
             $table->timestamps();
