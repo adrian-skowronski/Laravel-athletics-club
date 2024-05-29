@@ -20,9 +20,7 @@ class CreateTrainingsTable extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->unsignedBigInteger('trainer_id');
-            $table->unsignedBigInteger('sport_id');
             $table->foreign('trainer_id')->references('user_id')->on('users');
-            $table->foreign('sport_id')->references('sport_id')->on('sports');
             $table->timestamps();
         });
     }

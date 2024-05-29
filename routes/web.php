@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\StartController;
+
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('start.index');
-});
+Route::get('/', [StartController::class, 'index'])->name('start.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

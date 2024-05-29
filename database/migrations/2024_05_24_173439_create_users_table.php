@@ -14,14 +14,20 @@ class CreateUsersTable extends Migration
             $table->string('surname');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('phone')->nullable();
+            $table->date('birthdate');
+            $table->integer('points')->nullable();
+            $table->string('phone');
+            $table->unsignedBigInteger('sport_id');
             $table->unsignedBigInteger('role_id');
-            $table->rememberToken();
-            $table->string('category')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->string('photo')->nullalbe();
+            $table->rememberToken();
             $table->timestamps();
 
             $table->foreign('role_id')->references('role_id')->on('roles');
+            $table->foreign('sport_id')->references('sport_id')->on('sports');
+            $table->foreign('category_id')->references('category_id')->on('categories');
+
         });
     }
 
