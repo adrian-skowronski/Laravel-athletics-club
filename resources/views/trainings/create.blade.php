@@ -5,7 +5,10 @@
     @include('shared.navbar')
 
     <div class="container mt-5 mb-5">
-        <div class="row mt-4 mb-4 text-center">
+    @include('shared.session-error')
+    @include('shared.validation-error')
+
+    <div class="row mt-4 mb-4 text-center">
             <h1>Dodaj nowy trening</h1>
         </div>
 
@@ -44,7 +47,7 @@
 
                     <div class="form-group mb-2">
                         <label for="trainer_id" class="form-label">Trener</label>
-                        <select id="trainer_id" name="trainer_id" class="form-control @error('trainer_id') is-invalid @enderror">
+                        <select id="trainer_id" name="trainer_id" class="form-select @error('trainer_id') is-invalid @enderror">
                             <option value="">Wybierz trenera</option>
                             @foreach ($trainers as $trainer)
                                 <option value="{{ $trainer->user_id }}" @if (old('trainer_id') == $trainer->user_id) selected @endif>{{ $trainer->name }} {{ $trainer->surname }}</option>

@@ -20,7 +20,7 @@ class TrainingSeeder extends Seeder
                 'date' => '2024-06-04',
                 'start_time' => '08:00:00',
                 'end_time' => '09:30:00',
-                'trainer_id' => 6,
+                'trainer_id' => 7,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -30,7 +30,7 @@ class TrainingSeeder extends Seeder
                 'date' => '2024-06-06',
                 'start_time' => '18:00:00',
                 'end_time' => '19:00:00',
-                'trainer_id' => 6, 
+                'trainer_id' => 7, 
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

@@ -31,6 +31,7 @@ class UserSeeder extends Seeder
                 'birthdate' => '1990-02-03',
                 'phone' => '444555777',
                 'role_id' => 2,
+                'sport_id' => 1,
             ],
         );
     }

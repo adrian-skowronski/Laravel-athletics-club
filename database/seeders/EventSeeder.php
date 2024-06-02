@@ -22,6 +22,7 @@ class EventSeeder extends Seeder
                 'description' => 'Zapraszamy do Krakowa!',
                 'date' => '2024-06-06',
                 'start_hour' => '09:00:00',
+                'max_participants' => 40,
             ]
             );
             Event::firstOrCreate(
@@ -32,7 +33,8 @@ class EventSeeder extends Seeder
                     'name' => 'Mistrzostwa Województwa',
                     'description' => 'Zapraszamy do Rzeszowa!',
                     'date' => '2024-06-08',
-                    'start_hour' => '11:30:00',    
+                    'start_hour' => '11:30:00',  
+                    'max_participants' => 60,  
                 ]
                 );
     }

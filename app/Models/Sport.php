@@ -11,6 +11,8 @@ class Sport extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'sport_id';
+
     protected $fillable = ['name'];
 
     public function users()

@@ -4,12 +4,10 @@
 
 <body>
     @include('shared.navbar')
-    <br><br>
     <div class="container mt-5 mb-5">
         <div class="row mb-1">
         
             <h1>Lista zawodów</h1>
-            <br><br>
         </div>
         <div class="row">
             <table class="table table-hover table-straininged">

@@ -6,6 +6,8 @@
     @include('shared.navbar')
 
     <div class="container mt-5 mb-5">
+    @include('shared.session-error')
+    @include('shared.validation-error')
         <div class="row mt-4 mb-4 text-center">
             <h1>Dodaj nowe wydarzenie</h1>
         </div>

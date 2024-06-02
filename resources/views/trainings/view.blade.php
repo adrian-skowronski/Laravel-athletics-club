@@ -4,12 +4,11 @@
 
 <body>
     @include('shared.navbar')
-    <br><br>
     <div class="container mt-5 mb-5">
         <div class="row mb-1">
         
             <h1>Lista treningów</h1>
-            <br><br>
+            
         </div>
         <div class="row">
             <table class="table table-hover table-straininged">
@@ -19,7 +18,7 @@
                         <th scope="col">Dzień</th>
                         <th scope="col">Od</th>
                         <th scope="col">Do</th>
-                        <th scope="col">Trener</th>
+                        <th scope="col">Sport [Trener]</th>
                     </tr>
                 </thead>
                 <tbody>                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
@@ -29,7 +28,8 @@
                             <td>{{$training->date}}</td>
                             <td>{{$training->start_time}}</td>
                             <td>{{$training->end_time}}</td>
-                            <td>{{ $training->trainer->name }} {{ $training->trainer->surname }}</td>
+                            <td>{{ $training->trainer->sport->name }} [{{ $training->trainer->name }} {{ $training->trainer->surname }}]</td>
+                            <!--uwaga na problem N+1 -->
                         </tr>
                     @empty
                         <tr>

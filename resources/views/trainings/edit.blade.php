@@ -4,8 +4,10 @@
 
 <body>
     @include('shared.navbar')
-    <br>
+    
     <div class="container mt-5 mb-5">
+    @include('shared.session-error')
+    @include('shared.validation-error')
         <div class="row mt-4 mb-4 text-center">
             <h1>Edytuj dane treningu</h1>
         </div>
@@ -30,15 +32,21 @@
 
                     <div class="form-group mb-2">
                         <label for="start_time" class="form-label">Godzina rozpoczęcia</label>
-                        <input id="start_time" name="start_time" type="time" class="form-control @if ($errors->first('start_time')) is-invalid @endif" value="{{ $training->start_time }}">
-                        <div class="invalid-feedback">Nieprawidłowa godzina rozpoczęcia!</div>
+                        <input id="start_time" name="start_time" type="time" class="form-control @if ($errors->first('start_time')) is-invalid @endif" value="{{ old('start_time', $training->start_time) }}">
+                        @error('start_time')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="end_time" class="form-label">Godzina zakończenia</label>
-                        <input id="end_time" name="end_time" type="time" class="form-control @if ($errors->first('end_time')) is-invalid @endif" value="{{ $training->end_time }}">
-                        <div class="invalid-feedback">Nieprawidłowa godzina zakończenia! Musi być późniejsza niż godzina rozpoczęcia.</div>
+                        <input id="end_time" name="end_time" type="time" class="form-control @if ($errors->first('end_time')) is-invalid @endif" value="{{ old('end_time', $training->end_time) }}">
+                        @error('end_time')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+
+
 
                     <div class="form-group mb-2">
                         <label for="trainer_id" class="form-label">Trener</label>

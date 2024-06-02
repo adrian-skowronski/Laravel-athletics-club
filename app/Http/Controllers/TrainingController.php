@@ -13,7 +13,7 @@ class TrainingController extends Controller
      */
     public function index()
     {
-        $trainings = Training::with('trainer')->get();
+        $trainings = Training::with('trainer.sport')->get();
         return view('trainings.index', compact('trainings'));
     }
 
@@ -21,7 +21,7 @@ class TrainingController extends Controller
 
     public function view()
     {
-        $trainings = Training::with('trainer')->get();
+        $trainings = Training::with('trainer.sport')->get(); //nie ma problemu N+1 - zapewniono eager loading
         return view('trainings.view', compact('trainings'));
     }
     
@@ -65,8 +65,8 @@ class TrainingController extends Controller
     $request->validate([
         'description' => 'required|string',
         'date' => 'required|date',
-        'start_time' => 'required|date_format:HH:ii', 
-        'end_time' => 'required|date_format:HH:ii|gt:start_time', 
+        'start_time' => 'required|date_format:H:i',
+            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
         'trainer_id' => 'required|exists:users,user_id',
     ]);
 

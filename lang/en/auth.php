@@ -1,20 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
-
-    'failed' => 'Błędne dane logowania. Spróbuj ponownie.',
-    'password' => 'Błędne dane logowania. Spróbuj ponownie.',
+    'failed'   => 'These credentials do not match our records.',
+    'password' => 'The password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
 ];

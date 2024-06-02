@@ -2,38 +2,38 @@
 
 @include('shared.head', ['pageTitle' => 'Treningi - lista'])
 
+
 <body>
+    
     @include('shared.navbar')
 
     <div class="container mt-5 mb-5">
-        <div class="row mb-1">
+        <div class="row mt-5 mb-3">
             <h1>Lista treningów</h1>
         </div>
-        <div class="row mb-2">
-            <a href="{{ route('trainings.create') }}" class="btn btn-primary">Dodaj nowy trening</a>
+        <div class="row mb-3 mt-3 p-3 d-flex justify-content-center">
+            <a href="{{ route('trainings.create') }}" class="btn btn-primary" style="width: auto; white-space: nowrap;">Dodaj nowy trening</a>
         </div>
         <div class="row">
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">Sport</th>
                         <th scope="col">Opis</th>
                         <th scope="col">Dzień</th>
                         <th scope="col">Od</th>
                         <th scope="col">Do</th>
-                        <th scope="col">Trener</th>
+                        <th scope="col">Sport [Trener]</th>
                         <th scope="col">Akcje</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($trainings as $training)
                         <tr>
-                            <td>{{ $training->sport }}</td>
                             <td>{{ $training->description }}</td>
                             <td>{{ $training->date }}</td>
                             <td>{{ $training->start_time }}</td>
                             <td>{{ $training->end_time }}</td>
-                            <td>{{ $training->trainer->name }} {{ $training->trainer->surname }}</td>
+                            <td>{{ $training->trainer->sport->name }} [{{ $training->trainer->name }} {{ $training->trainer->surname }}]</td>
                             <td>
                                 <a href="{{ route('trainings.edit', $training->training_id) }}" class="btn btn-warning">Edycja</a>
                                 <form method="POST" action="{{ route('trainings.destroy', $training->training_id) }}" style="display:inline;">

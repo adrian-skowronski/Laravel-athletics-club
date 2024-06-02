@@ -42,7 +42,7 @@
   text-align: center;
   font-weight: bold;
   
-text-shadow: 1px 1px 2px #000000;}
+text-shadow: 6px 6px 6px #000000;}
 
     .footer {
       background-color: #343a40;
@@ -72,10 +72,8 @@ text-shadow: 1px 1px 2px #000000;}
             </div>
           </div>
 
-          <br><br>
-
           <section id="oferta" style="transform: scale(0.9); transform-origin: top center;">    <div class="row">
-        <div class="col-md-6 mb-2">
+        <div class="col-md-6 mb-1 mt-5">
             <div class="card h-100">
                 <img src="zawody.jpg" class="card-img-top" alt="Zawody">
                 <div class="card-body">
@@ -85,7 +83,7 @@ text-shadow: 1px 1px 2px #000000;}
                 </div>
             </div>
         </div>
-        <div class="col-md-6 mb-2">
+        <div class="col-md-6 mb-1 mt-5">
             <div class="card h-100">
                 <img src="trening.jpg" class="card-img-top" alt="Treningi">
                 <div class="card-body">

@@ -9,8 +9,8 @@
         <div class="row mb-1">
             <h1>Lista wydarzeń</h1>
         </div>
-        <div class="row mb-2">
-            <a href="{{ route('events.create') }}" class="btn btn-primary">Dodaj nowe wydarzenie</a>
+        <div class="row mb-3 mt-3 p-3 d-flex justify-content-center">
+            <a href="{{ route('events.create') }}" class="btn btn-primary" style="width: auto; white-space: nowrap;">Dodaj nowe wydarzenie</a>
         </div>
         <div class="row">
             <table class="table table-hover table-striped">

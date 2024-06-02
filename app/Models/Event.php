@@ -13,7 +13,7 @@ class Event extends Model
     protected $primaryKey = 'event_id';
 
     protected $fillable = [
-        'category', 'age_from', 'age_to', 'name', 'description', 'date', 'start_hour'
+        'category', 'age_from', 'age_to', 'name', 'description', 'date', 'start_hour', 'max_participants'
     ];
 
     public function users()

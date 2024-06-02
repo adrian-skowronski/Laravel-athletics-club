@@ -61,11 +61,11 @@
                 {{ __('Już zarejestrowany?') }}
             </a>
 
-            <x-primary-button class="ms-4">
+            <x-primary-button class="ms-4 ">
                 {{ __('Zarejestruj się') }}
             </x-primary-button>
         </div>
     </form>
 </x-guest-layout>
-<br>
+
 @include('shared.footer')

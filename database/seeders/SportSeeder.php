@@ -14,6 +14,13 @@ class SportSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Sport::firstOrCreate([
+            'name' => 'biegi krótkodystansowe',
+        ]
+        );
+        Sport::firstOrCreate([
+            'name' => 'skoki wzwyż',
+        ]
+        );
     }
 }

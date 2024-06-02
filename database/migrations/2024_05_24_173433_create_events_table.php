@@ -17,6 +17,7 @@ class CreateEventsTable extends Migration
             $table->text('description')->nullable();
             $table->date('date');
             $table->time('start_hour');
+            $table->integer('max_participants');
             $table->string('photo')->nullable();
             $table->timestamps();
         });
