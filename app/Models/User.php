@@ -17,7 +17,8 @@ class User extends Authenticatable
     protected $primaryKey = 'user_id';
 
     protected $fillable = [
-        'name', 'surname', 'email', 'password', 'birthdate', 'points', 'phone', 'role_id', 'remember_token', 'category'
+        'name', 'surname', 'email', 'password', 'birthdate', 'points', 'phone', 'role_id', 
+        'remember_token', 'category','sport_id', 'approved'
     ];
 
     protected $hidden = [
@@ -33,6 +34,15 @@ class User extends Authenticatable
     return $this->role_id === 1;
 }
 
+public function isAthlete()
+{
+    return $this->role_id === 3; 
+}
+
+public function isCoach()
+{
+    return $this->role_id === 2; 
+}
 
     public function category()
     {

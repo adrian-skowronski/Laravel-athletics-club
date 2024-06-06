@@ -28,7 +28,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('start.index', absolute: false));
+        if (!Auth::user()->approved) {
+            Auth::logout();
+            return redirect()->route('auth.notice');
+        }
+
+        return redirect()->intended(route('start.index', false));
     }
 
     /**
@@ -44,4 +49,5 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
 }

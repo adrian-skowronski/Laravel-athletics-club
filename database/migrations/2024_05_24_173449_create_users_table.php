@@ -18,9 +18,10 @@ class CreateUsersTable extends Migration
             $table->integer('points')->nullable();
             $table->string('phone');
             $table->unsignedBigInteger('sport_id')->nullable();
-            $table->unsignedBigInteger('role_id');
+            $table->unsignedBigInteger('role_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('photo')->nullable();
+            $table->boolean('approved')->default(false);
             $table->rememberToken();
             $table->timestamps();
 

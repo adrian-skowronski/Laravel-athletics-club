@@ -29,29 +29,33 @@
                 </li>
         
                 @auth
-                    @if(auth()->user()->isAdmin())
-                        <li class="nav-item">
-                            <a class="btn btn-link nav-link" href="{{ route('admin.index') }}">Panel Admina</a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="btn btn-link nav-link" href="{{ route('admin.index') }}">Panel Sportowca popraw navbar</a>
-                        </li>
-                    @endif
+                @if(auth()->user()->isAdmin())
                     <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="post">
-                            @csrf
-                            <button type="submit" class="btn btn-link nav-link">Wyloguj się</button>
-                        </form>
+                        <a class="btn btn-link nav-link" href="{{ route('admin.index') }}">Panel Admina</a>
                     </li>
-                @else
+                @elseif(auth()->user()->isAthlete())
                     <li class="nav-item">
-                        <a class="btn btn-link nav-link" href="{{ route('login') }}">Zaloguj się</a>
+                        <a class="btn btn-link nav-link" href="{{ route('athlete.panel') }}">Panel Sportowca</a>
                     </li>
+                @elseif(auth()->user()->isCoach())
                     <li class="nav-item">
-                        <a class="btn btn-link nav-link" href="{{ route('register') }}">Zarejestruj się</a>
+                        <a class="btn btn-link nav-link" href="{{ route('coach.panel') }}">Panel Trenera</a>
                     </li>
-                @endauth
+                @endif
+                <li class="nav-item">
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-link nav-link">Wyloguj się</button>
+                    </form>
+                </li>
+            @else
+                <li class="nav-item">
+                    <a class="btn btn-link nav-link" href="{{ route('login') }}">Zaloguj się</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-link nav-link" href="{{ route('register') }}">Zarejestruj się</a>
+                </li>
+            @endauth
             </ul>
         </div>
     </div>

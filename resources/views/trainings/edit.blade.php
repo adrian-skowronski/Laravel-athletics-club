@@ -50,7 +50,7 @@
 
                     <div class="form-group mb-2">
                         <label for="trainer_id" class="form-label">Trener</label>
-                        <select id="trainer_id" name="trainer_id" class="form-control @if ($errors->first('trainer_id')) is-invalid @endif">
+                        <select id="trainer_id" name="trainer_id" class="form-select @if ($errors->first('trainer_id')) is-invalid @endif">
                             <option value="">Wybierz trenera</option>
                             @foreach ($trainers as $trainer)
                                 <option value="{{ $trainer->user_id }}" @if ($trainer->user_id == $training->trainer_id) selected @endif>{{ $trainer->name }} {{ $trainer->surname }}</option>
