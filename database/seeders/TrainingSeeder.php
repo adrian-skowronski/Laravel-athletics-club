@@ -21,6 +21,7 @@ class TrainingSeeder extends Seeder
                 'start_time' => '08:00:00',
                 'end_time' => '09:30:00',
                 'trainer_id' => 7,
+                'max_points' => 10,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -31,6 +32,7 @@ class TrainingSeeder extends Seeder
                 'start_time' => '18:00:00',
                 'end_time' => '19:00:00',
                 'trainer_id' => 7, 
+                'max_points' => 15,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

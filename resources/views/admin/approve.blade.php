@@ -6,7 +6,7 @@
 
     <form method="POST" action="{{ route('admin.storeApproval', $user->user_id) }}">
         @csrf
-        @method('PATCH')
+        @method('POST')
         
         <div class="form-group">
             <label for="points">Punkty</label>

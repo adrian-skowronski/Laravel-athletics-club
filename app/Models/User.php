@@ -18,11 +18,11 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name', 'surname', 'email', 'password', 'birthdate', 'points', 'phone', 'role_id', 
-        'remember_token', 'category','sport_id', 'approved'
+        'remember_token', 'category','sport_id', 'approved', 'photo'
     ];
 
     protected $hidden = [
-        'password', 'remember_token', 'photo',
+        'password', 'remember_token',
     ];
 
     protected $casts = [

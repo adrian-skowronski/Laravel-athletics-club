@@ -1,5 +1,6 @@
 <?php
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\TrainerMiddleware;
 use Illuminate\Support\Facades\Schema;
 
 use App\Http\Controllers\ProfileController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AthletePanelController;
 use App\Http\Controllers\AthleteController;
+use App\Http\Controllers\TrainerController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -39,7 +41,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
    
 
-    Route::get('/admin/{table}', function ($table) {
+    Route::get('/admin/{table}', function ($table) {//każdy zasób rozpisać
         // Sprawdź, czy tabela istnieje
         if (Schema::hasTable($table)) {
             // Jeśli tabela istnieje, przekieruj do odpowiedniego kontrolera
@@ -67,4 +69,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/coach-panel', [CoachPanelController::class, 'index'])->name('coach.panel');
     Route::get('/athlete/edit', [AthleteController::class, 'edit'])->name('athlete.edit');
     Route::post('/athlete/update', [AthleteController::class, 'update'])->name('athlete.update');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/trainings/{training_id}/sign-up', [TrainingController::class, 'signUp'])->name('training.signUp');
+});
+
+Route::middleware(['auth', TrainerMiddleware::class])->group(function () {  
+    Route::get('/trainer', [TrainerController::class, 'index'])->name('trainer.index');
+    Route::get('/training/{training_id}/participants', [TrainerController::class, 'viewParticipants'])->name('trainer.viewParticipants');
+    Route::get('/training/{training_id}/participant/{user_id}/edit', [TrainerController::class, 'editStatus'])->name('trainer.editStatus');
+    Route::patch('/training/{training_id}/participant/{user_id}', [TrainerController::class, 'updateStatus'])->name('trainer.updateStatus');
 });

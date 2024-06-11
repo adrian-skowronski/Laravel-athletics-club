@@ -15,31 +15,31 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="start"><b>Klub Sokół</b></a>
+        <a class="navbar-brand" href="{{ route('start.index') }}"><b>Klub Sokół</b></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarText">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarText">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#oferta">Zawody</a>
+                    <a class="nav-link" href="{{ route('events.view') }}">Zawody</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#mapa">Treningi</a>
+                    <a class="nav-link" href="{{ route('trainings.view') }}">Treningi</a>
                 </li>
         
                 @auth
                 @if(auth()->user()->isAdmin())
                     <li class="nav-item">
-                        <a class="btn btn-link nav-link" href="{{ route('admin.index') }}">Panel Admina</a>
+                        <a class="nav-link" href="{{ route('admin.index') }}">Panel Admina</a>
                     </li>
                 @elseif(auth()->user()->isAthlete())
                     <li class="nav-item">
-                        <a class="btn btn-link nav-link" href="{{ route('athlete.panel') }}">Panel Sportowca</a>
+                        <a class="nav-link" href="{{ route('athlete.panel') }}">Panel Sportowca</a>
                     </li>
                 @elseif(auth()->user()->isCoach())
                     <li class="nav-item">
-                        <a class="btn btn-link nav-link" href="{{ route('coach.panel') }}">Panel Trenera</a>
+                        <a class="nav-link" href="{{ route('trainer.index') }}">Panel Trenera</a>
                     </li>
                 @endif
                 <li class="nav-item">
@@ -60,3 +60,4 @@
         </div>
     </div>
 </nav>
+

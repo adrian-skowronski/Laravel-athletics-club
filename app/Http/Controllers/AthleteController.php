@@ -22,7 +22,7 @@ class AthleteController extends Controller
             'surname' => 'required|string|max:255',
             'birthdate' => 'required|date',
             'phone' => 'required|string|max:255',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', 
         ]);
 
         $user->update([
@@ -30,13 +30,22 @@ class AthleteController extends Controller
             'surname' => $request->surname,
             'birthdate' => $request->birthdate,
             'phone' => $request->phone,
+            
         ]);
-
+       
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('photos', 'public');
-            $user->update(['photo' => $photoPath]);
+            // Delete old photo if exists
+            if ($user->photo) {
+                Storage::delete('public/upload/images/' . $user->photo);
+            }
+    
+            // Store new photo
+            $path = $request->file('photo')->store('upload/images', 'public');
+            
+            $user->photo = $path;
+            $user->save();
         }
-
         return redirect()->route('athlete.panel')->with('success', 'Dane zostały zaktualizowane.');
-    }
+    
+}
 }

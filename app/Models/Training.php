@@ -13,7 +13,7 @@ class Training extends Model
     protected $primaryKey = 'training_id';
 
     protected $fillable = [
-        'description', 'date', 'start_time', 'end_time', 'trainer_id'
+        'description', 'date', 'start_time', 'end_time', 'trainer_id', 'max_points'
     ];
 
     public function trainer()

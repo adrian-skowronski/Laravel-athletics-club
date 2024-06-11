@@ -19,6 +19,8 @@ class CreateTrainingUserTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('training_id')->references('training_id')->on('trainings')->onDelete('restrict');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('restrict');
+            $table->string('status')->default('Przyszły');
+            $table->integer('points')->default(0);
             $table->timestamps();
         });
     }

@@ -55,7 +55,12 @@
                         </select>
                         <div class="invalid-feedback">Nieprawidłowy trener!</div>
 
-                    </div>
+                        <div class="form-group mb-2">
+    <label for="max_points" class="form-label">Maksymalna liczba punktów</label>
+    <input id="max_points" name="max_points" type="number" class="form-control @error('max_points') is-invalid @enderror" value="{{ old('max_points') }}">
+    <div class="invalid-feedback">Nieprawidłowa maksymalna liczba punktów!</div>
+</div>
+
                     
                     <div class="text-center mt-4 mb-4">
                         <input class="btn btn-success" type="submit" value="Dodaj">
