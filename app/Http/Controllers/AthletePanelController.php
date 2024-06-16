@@ -19,7 +19,7 @@ class AthletePanelController extends Controller
         ->join('users', 'trainings.trainer_id', '=', 'users.user_id')
         ->where('training_user.user_id', $user->user_id)
         ->select('trainings.*', 'users.name as trainer_name', 'users.surname as trainer_surname', 'training_user.status', 'training_user.points')
-        ->get();
+        ->paginate(5);
     
 
         $events = DB::table('event_user')

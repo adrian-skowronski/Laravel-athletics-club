@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Sport;
+use App\Models\Event;
 use App\Models\Category;
 
 class AdminController extends Controller
@@ -18,20 +19,18 @@ class AdminController extends Controller
         $tables = ['trainings'];
         $users = User::where('approved', false)->get();
 
+
         return view('admin.index', compact('tables', 'users'));
     }
 
     public function showTable($table)
     {
-        // Sprawdzanie, czy tabela istnieje w bazie danych
         if (!Schema::hasTable($table)) {
             return redirect()->route('admin.index')->with('error', 'Tabela nie istnieje.');
         }
 
-        // Pobranie wszystkich rekordów z wybranej tabeli
         $records = DB::table($table)->get();
 
-        // Przekazanie rekordów do widoku
         return view('admin.table', compact('table', 'records'));
     }
 
@@ -72,5 +71,30 @@ class AdminController extends Controller
         $user = User::findOrFail($user_id);
         $user->delete();
         return redirect()->route('admin.requests')->with('success', 'Użytkownik odrzucony.');
+    }
+
+    public function showEventRegistration()
+    {
+        $events = Event::where('date', '>', now())->get();
+        return view('admin.event_registration', compact('events'));
+    }
+
+    public function fetchEligibleAthletes(Request $request)
+    {
+        $event = Event::findOrFail($request->event_id);
+        $athletes = User::where('category_id', '>=', $event->required_category_id)->get();
+        $events = Event::where('date', '>', now())->get();
+
+        return view('admin.event_registration', compact('events', 'athletes', 'event'));
+    }
+
+    public function registerAthletesToEvent(Request $request)
+    {
+        $event = Event::findOrFail($request->event_id);
+        $athletes = $request->input('athletes', []);
+
+        $event->users()->attach($athletes);
+
+        return redirect()->route('admin.event_registration')->with('success', 'Zawodnicy zostali zapisani na wydarzenie.');
     }
 }

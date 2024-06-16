@@ -37,13 +37,17 @@
 
                     <div class="form-group mb-2">
                         <label for="age_from" class="form-label">Wiek od</label>
-                        <input id="age_from" name="age_from" type="number" class="form-control @error('age_from') is-invalid @enderror" value="{{ old('age_from') }}">
+                        <input id="age_from" name="age_from" type="range" min="0" max="100" class="form-control @error('age_from') is-invalid @enderror" value="0"
+                        oninput="ageFrom.innerText = this.value">
+                        <p id="ageFrom">0</p>
                         <div class="invalid-feedback">Nieprawidłowy wiek od!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="age_to" class="form-label">Wiek do</label>
-                        <input id="age_to" name="age_to" type="number" class="form-control @error('age_to') is-invalid @enderror" value="{{ old('age_to') }}">
+                        <input id="age_to" name="age_to" type="range" min="0" max="100" class="form-control @error('age_to') is-invalid @enderror" value="0"
+                        oninput="ageTo.innerText = this.value">
+                        <p id="ageTo">0</p>
                         <div class="invalid-feedback">Nieprawidłowy wiek do!</div>
                     </div>
 
@@ -59,6 +63,12 @@
                         <div class="invalid-feedback">Nieprawidłowa godzina rozpoczęcia!</div>
                     </div>
                     
+                    <div class="form-group mb-2">
+                        <label for="max_participants" class="form-label">Maksymalna liczba uczestników</label>
+                        <input id="max_participants" name="max_participants" type="number" class="form-control @error('max_participants') is-invalid @enderror" value="{{ old('max_participants') }}">
+                        <div class="invalid-feedback">Nieprawidłowa liczba!</div>
+                    </div>
+
                     <div class="text-center mt-4 mb-4">
                         <input class="btn btn-success" type="submit" value="Dodaj">
                     </div>
@@ -69,4 +79,21 @@
 
     @include('shared.footer')
 </body>
+<script>
+    function updateAgeRange() {
+        var ageFrom = document.getElementById('age_from').value;
+        var ageTo = document.getElementById('age_to').value;
+        if (parseInt(ageFrom) > parseInt(ageTo)) {
+            var temp = ageFrom;
+            ageFrom = ageTo;
+            ageTo = temp;
+        }
+        document.getElementById('age_range').innerText = ageFrom + ' - ' + ageTo;
+    }
+
+    // Inicjalizacja wartości na początku
+    document.addEventListener('DOMContentLoaded', function() {
+        updateAgeRange();
+    });
+</script>
 </html>

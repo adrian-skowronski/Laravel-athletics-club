@@ -13,9 +13,11 @@
                 <li><strong>Nazwisko:</strong> {{ Auth::user()->surname }}</li>
                 <li><strong>Data urodzenia:</strong> {{ Auth::user()->birthdate }} (wiek: {{ $age }} l.)</li>
                 <li><strong>Telefon:</strong> {{ Auth::user()->phone }}</li>
+                <li><strong>Sport:</strong> {{ Auth::user()->sport->name }}</li>
                 <li><strong>Zdjęcie:</strong> 
+                <br>
                     @if(Auth::user()->photo)
-                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User Photo">
+                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User Photo" style="max-width: 250px; max-height: 250px;">
                     @else
                         Brak zdjęcia
                     @endif
@@ -54,6 +56,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="mt-2">
+            {{ $trainings->links('pagination::bootstrap-4') }}
+            </div>
 
         <h2 class="mt-5">Twoje Zawody</h2>
         <table class="table">
@@ -80,10 +85,14 @@
             <li>Liczba treningów z obecnością: {{ $total_trainings }}</li>
             <li>Łączny czas spędzony na treningach: {{ $total_time }}h</li>
             <li>Ostatni trening z obecnością: 
+                @if ($last_training)
                 {{ $last_training->description }} |
                 Data treningu: {{ $last_training->date }} |
                 Status: {{ $last_training->status }} | 
                 Punkty: {{ $last_training->points }}
+                @else
+                Brak danych
+                @endif
             </li>
             <li>Liczba punktów zdobytych w bieżącym miesiącu: {{ $total_points_last_month }}</li>
         </ul>

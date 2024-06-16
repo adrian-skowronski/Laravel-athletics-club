@@ -18,11 +18,12 @@
                     <tr>
                         <th scope="col">Nazwa</th>
                         <th scope="col">Opis</th>
-                        <th scope="col">Kategoria</th>
+                        <th scope="col">Wymagana kategoria</th>
                         <th scope="col">Wiek od</th>
                         <th scope="col">Wiek do</th>
                         <th scope="col">Dzień</th>
                         <th scope="col">Godzina</th>
+                        <th scope="col">Maks. liczba uczest.</th>
                         <th scope="col">Akcje</th>
                     </tr>
                 </thead>
@@ -31,11 +32,12 @@
                         <tr>
                             <td>{{ $event->name }}</td>
                             <td>{{ $event->description }}</td>
-                            <td>{{ $event->category }}</td>
+                            <td>{{ $event->requiredCategory->name }}</td>
                             <td>{{ $event->age_from }}</td>
                             <td>{{ $event->age_to }}</td>
                             <td>{{ $event->date }}</td>
                             <td>{{ $event->start_hour }}</td>
+                            <td>{{ $event->max_participants }}</td>
                             <td>
                                 <a href="{{ route('events.edit', $event->event_id) }}" class="btn btn-warning">Edycja</a>
                                 <form method="POST" action="{{ route('events.destroy', $event->event_id) }}" style="display:inline;">

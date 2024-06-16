@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Events\PointsUpdated;
 
 class User extends Authenticatable
 {
@@ -18,7 +19,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name', 'surname', 'email', 'password', 'birthdate', 'points', 'phone', 'role_id', 
-        'remember_token', 'category','sport_id', 'approved', 'photo'
+        'remember_token', 'category_id','sport_id', 'approved', 'photo'
     ];
 
     protected $hidden = [
@@ -34,14 +35,14 @@ class User extends Authenticatable
     return $this->role_id === 1;
 }
 
-public function isAthlete()
-{
-    return $this->role_id === 3; 
-}
-
 public function isCoach()
 {
     return $this->role_id === 2; 
+}
+
+public function isAthlete()
+{
+    return $this->role_id === 3; 
 }
 
     public function category()
@@ -68,4 +69,8 @@ public function isCoach()
     {
         return $this->belongsToMany(Training::class, 'training_user', 'user_id', 'training_id');
     }
+
+    protected $dispatchesEvents = [
+        'updated' => PointsUpdated::class,
+    ];
 }

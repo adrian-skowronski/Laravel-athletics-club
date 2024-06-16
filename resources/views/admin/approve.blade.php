@@ -2,7 +2,9 @@
 @include('shared.head', ['pageTitle' => 'Zatwierdzanie użytkownika'])
 @include('shared.navbar')
 <div class="container">
-    <h1>Zatwierdzanie użytkownika</h1>
+@include('shared.session-error')
+@include('shared.validation-error')
+    <h1 class="mt-5">Zatwierdzanie użytkownika</h1>
 
     <form method="POST" action="{{ route('admin.storeApproval', $user->user_id) }}">
         @csrf
@@ -14,30 +16,50 @@
         </div>
 
         <div class="form-group">
-            <label for="sport_id">Sport</label>
-            <select id="sport_id" name="sport_id" class="form-select" required>
-                @foreach($sports as $sport)
-                    <option value="{{ $sport->sport_id }}">{{ $sport->name }}</option>
-                @endforeach
-            </select>
+    <label>Sport</label><br>
+    @foreach($sports as $sport)
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sport_id" id="sport_{{ $sport->sport_id }}" value="{{ $sport->sport_id }}" {{ old('sport_id') == $sport->sport_id ? 'checked' : '' }}>
+            <label class="form-check-label" for="sport_{{ $sport->sport_id }}">
+                {{ $sport->name }}
+            </label>
         </div>
+    @endforeach
+    @error('sport_id')
+        <div class="invalid-feedback d-block">{{ $message }}</div>
+    @enderror
+</div>
+
 
         <div class="form-group">
-            <label for="role_id">Rola</label>
-            <select id="role_id" name="role_id" class="form-select" required>
-                @foreach($roles as $role)
-                    <option value="{{ $role->role_id }}">{{ $role->name }}</option>
-                @endforeach
-            </select>
+    <label>Rola</label><br>
+    @foreach($roles as $role)
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="role_id" id="role_{{ $role->role_id }}" value="{{ $role->role_id }}" {{ old('role_id') == $role->role_id ? 'checked' : '' }}>
+            <label class="form-check-label" for="role_{{ $role->role_id }}">
+                {{ $role->name }}
+            </label>
         </div>
+    @endforeach
+    @error('role_id')
+        <div class="invalid-feedback d-block">{{ $message }}</div>
+    @enderror
+</div>
+
 
         <div class="form-group">
-            <label for="category_id">Kategoria</label>
-            <select id="category_id" name="category_id" class="form-select" required>
-                @foreach($categories as $category)
-                    <option value="{{ $category->category_id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
+            <label>Kategoria</label><br>
+            @foreach($categories as $category)
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="category_id" id="category_{{ $category->category_id }}" value="{{ $category->category_id }}">
+                    <label class="form-check-label" for="category_{{ $category->category_id }}">
+                        {{ $category->name }}
+                    </label>
+                </div>
+            @endforeach
+            @error('category_id')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
         </div>
 
         <button type="submit" class="btn btn-success">Zatwierdź</button>

@@ -20,6 +20,7 @@
                         <th scope="col">Wiek do</th>
                         <th scope="col">Dzień</th>
                         <th scope="col">Godzina</th>
+                        <th scope="col">Maks. liczba uczest.</th>
                 
                     </tr>
                 </thead>
@@ -28,11 +29,12 @@
                         <tr>
                             <td>{{$event->name}}</td>
                             <td>{{$event->description}}</td>
-                            <td>{{$event->category}}</td>
+                            <td>{{$event->requiredCategory->name }}</td>
                             <td>{{$event->age_from}}</td>
                             <td>{{$event->age_to}} </td>
                             <td>{{$event->date}} </td>
                             <td>{{$event->start_hour}} </td>
+                            <td>{{$event->max_participants}}</td>
                         </tr>
                     @empty
                         <tr>

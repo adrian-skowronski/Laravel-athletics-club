@@ -13,7 +13,7 @@ class Event extends Model
     protected $primaryKey = 'event_id';
 
     protected $fillable = [
-        'category', 'age_from', 'age_to', 'name', 'description', 'date', 'start_hour', 'max_participants'
+        'required_category_id', 'age_from', 'age_to', 'name', 'description', 'date', 'start_hour', 'max_participants'
     ];
 
     public function users()
@@ -24,5 +24,10 @@ class Event extends Model
     public function sports()
     {
         return $this->belongsToMany(Sport::class, 'event_sport', 'event_id', 'sport_id');
+    }
+
+    public function requiredCategory()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

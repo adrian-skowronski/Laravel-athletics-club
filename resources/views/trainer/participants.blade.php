@@ -5,7 +5,7 @@
     @include('shared.navbar')
     <div class="container mt-5">
         <h1>Uczestnicy Treningu</h1>
-        <table class="table">
+        <table class="table mt-3">
             <thead>
                 <tr>
                     <th>Imię</th>
@@ -29,6 +29,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="mt-5">
+            <a href="{{ route('trainer.index') }}" class="btn btn-secondary">Powróć do panelu Trenera</a>
+        </div>
     </div>
     @include('shared.footer')
 </body>

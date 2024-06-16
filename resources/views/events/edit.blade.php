@@ -38,13 +38,17 @@
 
                     <div class="form-group mb-2">
                         <label for="age_from" class="form-label">Wiek od</label>
-                        <input id="age_from" name="age_from" type="number" class="form-control @error('age_from') is-invalid @enderror" value="{{ $event->age_from }}">
+                        <input id="age_from" name="age_from" type="range" min="0" max="100" class="form-control @error('age_from') is-invalid @enderror" value="{{ $event->age_from }}"
+                        oninput="ageFrom.innerText = this.value">
+                        <p id="ageFrom">{{$event->age_from}}</p>
                         <div class="invalid-feedback">Nieprawidłowy wiek od!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="age_to" class="form-label">Wiek do</label>
-                        <input id="age_to" name="age_to" type="number" class="form-control @error('age_to') is-invalid @enderror" value="{{ $event->age_to }}">
+                        <input id="age_to" name="age_to" type="range" min="0" max="100" class="form-control @error('age_to') is-invalid @enderror" value="{{ $event->age_to }}"
+                        oninput="ageTo.innerText = this.value">
+                        <p id="ageTo">{{$event->age_to}}</p>
                         <div class="invalid-feedback">Nieprawidłowy wiek do!</div>
                     </div>
 
@@ -54,11 +58,17 @@
                         <div class="invalid-feedback">Nieprawidłowa data!</div>
                     </div>
 
-                    <div class="form-group mb-2
-                    ">
+                    <div class="form-group mb-2">
                         <label for="start_hour" class="form-label">Godzina</label>
-                        <input id="start_hour" name="start_hour" type="time" class="form-control @error('start_hour') is-invalid @enderror" value="{{ $event->start_hour }}">
+                        <input id="start_hour" name="start_hour" type="time" class="form-control input-md @error('start_hour') is-invalid @enderror" value="{{ $event->start_hour }}">
                         <div class="invalid-feedback">Nieprawidłowa godzina rozpoczęcia!</div>
+                    </div>
+
+                    
+                    <div class="form-group mb-2">
+                        <label for="max_participants" class="form-label">Maks. liczba uczest.</label>
+                        <input id="max_participants" name="max_participants" type="number" class="form-control @error('max_participants') is-invalid @enderror" value="{{ $event->max_participants }}">
+                        <div class="invalid-feedback">Nieprawidłowa liczba!</div>
                     </div>
                     
                     <div class="text-center mt-4 mb-4">

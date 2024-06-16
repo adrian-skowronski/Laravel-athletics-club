@@ -27,7 +27,7 @@
                     <div class="form-group mb-2">
                         <label for="date" class="form-label">Dzień</label>
                         <input id="date" name="date" type="date" class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}">
-                        <div class="invalid-feedback">Nieprawidłowa dzień!</div>
+                        <div class="invalid-feedback">Nieprawidłowy dzień!</div>
 
                     </div>
 

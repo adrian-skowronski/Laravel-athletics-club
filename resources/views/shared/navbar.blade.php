@@ -26,9 +26,14 @@
                         <li class="nav-item">
                             <a class="btn btn-link nav-link" href="{{ route('admin.index') }}">Panel Admina</a>
                         </li>
-                    @else
+                    @elseif(auth()->user()->isCoach())
                         <li class="nav-item">
-                            <a class="btn btn-link nav-link" href="{{ route('admin.index') }}">Panel Użytkownika</a>
+                            <a class="btn btn-link nav-link" href="{{ route('trainer.index') }}">Panel Trenera</a>
+                        </li>
+                        @elseif(auth()->user()->isAthlete())
+
+                        <li class="nav-item">
+                            <a class="btn btn-link nav-link" href="{{ route('athlete.panel') }}">Panel Sportowca</a>
                         </li>
                     @endif
                     <li class="nav-item">

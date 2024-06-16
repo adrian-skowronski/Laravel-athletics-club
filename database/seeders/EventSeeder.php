@@ -15,7 +15,7 @@ class EventSeeder extends Seeder
     {
         Event::firstOrCreate(
             [
-                'category' => 'powiatowe',
+                'required_category_id' => '1',
                 'age_from' => 20,
                 'age_to' => 40,
                 'name' => 'Puchar Prezesa',
@@ -27,7 +27,7 @@ class EventSeeder extends Seeder
             );
             Event::firstOrCreate(
                 [
-                    'category' => 'wojewódzkie',
+                    'required_category_id' => '2',
                     'age_from' => 20,
                     'age_to' => 99,
                     'name' => 'Mistrzostwa Województwa',
