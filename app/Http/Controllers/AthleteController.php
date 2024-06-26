@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\TrainingUser;
 
 class AthleteController extends Controller
 {
@@ -21,7 +22,7 @@ class AthleteController extends Controller
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'birthdate' => 'required|date',
-            'phone' => 'required|string|max:255',
+            'phone' => 'required|string|max:11',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', 
         ]);
 
@@ -34,12 +35,10 @@ class AthleteController extends Controller
         ]);
        
         if ($request->hasFile('photo')) {
-            // Delete old photo if exists
             if ($user->photo) {
                 Storage::delete('public/upload/images/' . $user->photo);
             }
     
-            // Store new photo
             $path = $request->file('photo')->store('upload/images', 'public');
             
             $user->photo = $path;
@@ -47,5 +46,23 @@ class AthleteController extends Controller
         }
         return redirect()->route('athlete.panel')->with('success', 'Dane zostały zaktualizowane.');
     
+}
+
+public function removeFromTraining(Request $request)
+{
+    $user = auth()->user();
+    $trainingId = $request->input('training_id');
+
+    $participant = TrainingUser::where('user_id', $user->user_id)
+                               ->where('training_id', $trainingId)
+                               ->first();
+
+    if (!$participant) {
+        return redirect()->back()->with('error', 'Nie jesteś zapisany na ten trening.');
+    }
+
+    $participant->delete();
+
+    return redirect()->back()->with('success', 'Wypisano się z treningu.');
 }
 }

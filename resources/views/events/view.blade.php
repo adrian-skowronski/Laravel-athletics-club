@@ -46,9 +46,9 @@
                 
             </table>
 
-            <div class="container mt-3">
-    
-</div>
+            <div class="mt-2">
+            {{ $events->links('pagination::bootstrap-4') }}
+            </div> 
         </div>
     </div>
 

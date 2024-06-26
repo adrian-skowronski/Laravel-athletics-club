@@ -6,18 +6,19 @@ use App\Models\User;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class TrainingController extends Controller
 {
     public function index()
     {
-        $trainings = Training::with('trainer.sport')->paginate(10);
+        $trainings = Training::with('trainer.sport')->orderBy('date', 'desc')->paginate(10);
         return view('trainings.index', compact('trainings'));
     }
 
     public function view()
     {
-        $trainings = Training::with('trainer.sport')->paginate(10); //nie ma problemu N+1 - zapewniono eager loading
+        $trainings = Training::with('trainer.sport')->orderBy('date', 'desc')->paginate(10); //nie ma problemu N+1 - zapewniłem eager loading
         return view('trainings.view', compact('trainings'));
     }
 
@@ -58,13 +59,16 @@ class TrainingController extends Controller
         $validatedData = $request->validate([
             'description' => 'required|string',
             'date' => 'required|date',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
+            'start_time' => 'required',
+            'end_time' => 'required',
             'trainer_id' => 'required|exists:users,user_id',
             'max_points' => 'nullable|integer|min:0',
         ]);
 
-        if ($this->checkDateConflict($validatedData['date'])) {
+        if (strtotime($validatedData['start_time']) >= strtotime($validatedData['end_time'])) {
+            return redirect()->back()->withErrors(['end_time' => 'Czas zakończenia musi być późniejszy niż czas rozpoczęcia.'])->withInput();}
+        
+       if ($this->checkDateConflict($validatedData['date'])) {
             return redirect()->back()->withErrors(['date' => 'W tym dniu jest już zaplanowane wydarzenie.'])->withInput();
         }
 
@@ -99,7 +103,10 @@ class TrainingController extends Controller
 
     private function canSignUpForTraining($user, $training)
     {
-        return $user->role_id == 3 && $user->sport_id == $training->trainer->sport->sport_id;
+        $now = Carbon::now();
+        $trainingStart = Carbon::parse($training->date)->startOfDay();
+
+        return $user->role_id == 3 && $user->sport_id == $training->trainer->sport->sport_id && $now->lt($trainingStart);
     }
 
     private function checkDateConflict($date)

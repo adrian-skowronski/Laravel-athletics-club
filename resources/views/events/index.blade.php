@@ -55,6 +55,10 @@
                 </tbody>
             </table>
 
+            <div class="mt-2">
+            {{ $events->links('pagination::bootstrap-4') }}
+            </div> 
+
             <div class="container mt-3">
                 <div class="row">
                     <div class="col text-center">

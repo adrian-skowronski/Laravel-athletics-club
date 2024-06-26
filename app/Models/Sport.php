@@ -18,10 +18,5 @@ class Sport extends Model
     public function users()
     {
         return $this->hasMany(User::class, 'sport_id');
-    }
-
-    public function events()
-    {
-        return $this->belongsToMany(Event::class, 'event_sport', 'sport_id', 'event_id');
-    }
+    } 
 }

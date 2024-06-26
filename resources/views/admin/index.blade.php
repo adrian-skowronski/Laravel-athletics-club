@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 
 //LISTA NAZW TABEL
-$tables = ['users', 'trainings', 'events', 'sports'];
+$tables = ['users', 'trainings', 'events', 'sports', 'event_user'];
 
 //TŁUMACZENI NA POLSKI W TABLICY ASOCJACYJNEJ
 $tableNames = [
@@ -11,6 +11,7 @@ $tableNames = [
     'trainings' => 'Treningi',
     'events' => 'Wydarzenia',
     'sports' => 'Sporty',
+    'event_user' => 'Uczestnicy wydarzeń',
 ];
 ?>
 
@@ -47,7 +48,6 @@ $tableNames = [
     </div>
 </section>
 
-<a href="{{ route('admin.event_registration') }}" class="btn btn-primary mt-3">Rejestracja na wydarzenia</a>
 
 
 <div class="container mt-5">

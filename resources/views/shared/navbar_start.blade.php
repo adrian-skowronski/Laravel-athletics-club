@@ -1,10 +1,6 @@
 <style>
     .navbar {
       background-color: #0077b6 !important; 
-      position: fixed; 
-      width: 100%; 
-      top: 0; 
-      z-index: 9999;
     }
 
     .navbar-brand,
@@ -45,15 +41,15 @@
                 <li class="nav-item">
                     <form action="{{ route('logout') }}" method="post">
                         @csrf
-                        <button type="submit" class="btn btn-link nav-link">Wyloguj się</button>
+                        <button type="submit" class="nav-link">Wyloguj się</button>
                     </form>
                 </li>
             @else
                 <li class="nav-item">
-                    <a class="btn btn-link nav-link" href="{{ route('login') }}">Zaloguj się</a>
+                    <a class="nav-link" href="{{ route('login') }}">Zaloguj się</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-link nav-link" href="{{ route('register') }}">Zarejestruj się</a>
+                    <a class="nav-link" href="{{ route('register') }}">Zarejestruj się</a>
                 </li>
             @endauth
             </ul>

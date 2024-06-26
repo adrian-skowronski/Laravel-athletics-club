@@ -14,22 +14,38 @@ class AthletePanelController extends Controller
     {
         $user = Auth::user();
 
+        $birthdate = Carbon::parse(Auth::user()->birthdate);
+        $age = $birthdate->age;
+
         $trainings = DB::table('training_user')
         ->join('trainings', 'training_user.training_id', '=', 'trainings.training_id')
         ->join('users', 'trainings.trainer_id', '=', 'users.user_id')
         ->where('training_user.user_id', $user->user_id)
         ->select('trainings.*', 'users.name as trainer_name', 'users.surname as trainer_surname', 'training_user.status', 'training_user.points')
+        ->orderBy('date', 'desc')
         ->paginate(5);
+
+        $allTrainings = DB::table('training_user')
+        ->join('trainings', 'training_user.training_id', '=', 'trainings.training_id')
+        ->join('users', 'trainings.trainer_id', '=', 'users.user_id')
+        ->where('training_user.user_id', $user->user_id)
+        ->select('trainings.*', 'users.name as trainer_name', 'users.surname as trainer_surname', 'training_user.status', 'training_user.points')
+        ->orderBy('date', 'desc')
+        ->get();
     
+        /////////////
 
         $events = DB::table('event_user')
             ->join('events', 'event_user.event_id', '=', 'events.event_id')
             ->where('event_user.user_id', $user->user_id)
             ->select('events.*')
-            ->get();
+            ->orderBy('date', 'desc')
+            ->paginate(5);
+
+            /////////////
 
             $total_trainings = 0;
-            foreach ($trainings as $training) {
+            foreach ($allTrainings as $training) {
                 $presence = DB::table('training_user') //spr obecności
                     ->where('training_id', $training->training_id)
                     ->where('user_id', $user->user_id)
@@ -43,7 +59,7 @@ class AthletePanelController extends Controller
             
             //łączny czas na treningach użytkownika
             $total_time = 0;
-            foreach ($trainings as $training) {
+            foreach ($allTrainings as $training) {
 
                 $presence = DB::table('training_user') //sprawdzenie czy był obecny sportowiec na treningu
                     ->where('training_id', $training->training_id)
@@ -69,8 +85,8 @@ class AthletePanelController extends Controller
     ->select('trainings.description', 'trainings.date', 'training_user.status', 'training_user.points')
     ->first();
 
-    $birthdate = Carbon::parse(Auth::user()->birthdate);
-    $age = $birthdate->age;
+    
+////////////
 
     $start_of_current_month = Carbon::now()->startOfMonth();
     $end_of_current_month = Carbon::now()->endOfMonth();
@@ -83,33 +99,37 @@ class AthletePanelController extends Controller
             ->get();
 
         $total_points_last_month = $trainings_last_month->sum('points');
+
+        ////////////// PIERWSZY WYKRES - średni czas na treningu w tygodniu
         $trainingData = [];
         for ($i = 0; $i < 8; $i++) {
             $start_of_week = Carbon::now()->subWeeks($i)->startOfWeek();
             $end_of_week = Carbon::now()->subWeeks($i)->endOfWeek();
-
             $total_time_per_week = DB::table('training_user')
                 ->join('trainings', 'training_user.training_id', '=', 'trainings.training_id')
                 ->where('training_user.user_id', $user->user_id)
                 ->where('training_user.status', 'obecność')
-                ->whereBetween('trainings.date', [$start_of_week, $end_of_week])
+                ->where('trainings.date', '>=', $start_of_week)
+        ->where('trainings.date', '<=', $end_of_week)
                 ->sum(DB::raw('TIME_TO_SEC(TIMEDIFF(trainings.end_time, trainings.start_time))'));
 
+                
             $total_trainings_per_week = DB::table('training_user')
                 ->join('trainings', 'training_user.training_id', '=', 'trainings.training_id')
                 ->where('training_user.user_id', $user->user_id)
                 ->where('training_user.status', 'obecność')
-                ->whereBetween('trainings.date', [$start_of_week, $end_of_week])
-                ->count();
+                ->where('trainings.date', '>=', $start_of_week)
+                ->where('trainings.date', '<=', $end_of_week)
+                 ->count();
 
-            // Dodaj dane do tablicy
-            $trainingData[] = [
-                'date' => $start_of_week->format('Y-m-d'),
-                'average_time' => $total_trainings_per_week > 0 ? round($total_time_per_week / $total_trainings_per_week / (60 * 60), 2) : 0
-            ];
+                 $trainingData[] = [
+                    'date' => $start_of_week->format('Y-m-d'),
+                    'average_time' => $total_trainings_per_week > 0 ? round($total_time_per_week / ($total_trainings_per_week * 60 * 60), 2) : 0
+                ];
         }
 
-            //DRUGI WYKRES - treningi na miesiąc
+
+            //////DRUGI WYKRES - treningi na miesiąc
             $trainingCounts = [];
         $labels = [];
         for ($i = 0; $i < 4; $i++) {
@@ -119,6 +139,7 @@ class AthletePanelController extends Controller
             $trainingCount = DB::table('training_user')
                 ->join('trainings', 'training_user.training_id', '=', 'trainings.training_id')
                 ->where('training_user.user_id', $user->user_id)
+                ->where('training_user.status', '=', 'obecność')
                 ->whereBetween('trainings.date', [$start_of_month, $end_of_month])
                 ->count();
 
@@ -126,7 +147,7 @@ class AthletePanelController extends Controller
             $labels[] = $start_of_month->format('Y-m');
         }
 
-        // Odwracamy kolejność, aby najnowszy miesiąc był na końcu
+        // odwracamy kolejność, aby najnowszy miesiąc był na końcu
         $trainingCounts = array_reverse($trainingCounts);
         $labels = array_reverse($labels);
 

@@ -3,6 +3,8 @@
 
 <body>
     @include('shared.navbar')
+    @include('shared.validation-error')
+    @include('shared.session-error')
     <div class="container mt-5">
         <h1 class="text-center mb-5">Edycja Statusu Treningu</h1>
 
@@ -16,31 +18,58 @@
                 </div>
             </div>
         </div>
-
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <form action="{{ route('trainer.updateStatus', ['training_id' => $training->training_id, 'user_id' => $user->user_id]) }}" method="POST" class="p-3 border rounded">
-                    @csrf
-                    @method('PATCH')
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select id="status" name="status" class="form-select" required>
-                            <option value="obecność" {{ $user->status == 'obecność' ? 'selected' : '' }}>Obecność</option>
-                            <option value="nieobecność" {{ $user->status == 'nieobecność' ? 'selected' : '' }}>Nieobecność</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="points" class="form-label">Punkty</label>
-                        <input type="number" id="points" name="points" class="form-control" value="{{ $user->points }}" required max="{{ $training->max_points }}" pattern="\d*">
-                        <div class="invalid-feedback">Punkty muszą być liczbą całkowitą z zakresu do {{ $training->max_points }}.</div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">Zapisz</button>
-                    </div>
-                </form>
+    <div class="col-md-6">
+        <form action="{{ route('trainer.updateStatus', ['training_id' => $training->training_id, 'user_id' => $user->user_id]) }}" method="POST" class="p-3 border rounded">
+            @csrf
+            @method('PATCH')
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" name="status" class="form-select" required>
+                    <option value="obecność" {{ $user->status == 'obecność' ? 'selected' : '' }}>Obecność</option>
+                    <option value="nieobecność usprawiedliwiona" {{ $user->status == 'nieobecność usprawiedliwiona' ? 'selected' : '' }}>Nieobecność usprawiedliwiona</option>
+                    <option value="nieobecność nieusprawiedliwiona" {{ $user->status == 'nieobecność nieusprawiedliwiona' ? 'selected' : '' }}>Nieobecność nieusprawiedliwiona</option>
+                </select>
             </div>
-        </div>
+            <div class="mb-3">
+    <label for="points" class="form-label">Punkty</label>
+    <input type="number" id="points" name="points" class="form-control" value="{{ old('points', $user->status == 'nieobecność usprawiedliwiona' ? '0' : ($user->status == 'nieobecność nieusprawiedliwiona' ? '-5' : $user->points ?? '')) }}" required max="{{ $training->max_points }}" pattern="\d*" {{ $user->status == 'nieobecność usprawiedliwiona' || $user->status == 'nieobecność nieusprawiedliwiona' ? 'readonly' : '' }}>
+    @if ($user->status == 'nieobecność usprawiedliwiona' || $user->status == 'nieobecność nieusprawiedliwiona')
+        <input type="hidden" name="points" value="{{ $user->status == 'nieobecność usprawiedliwiona' ? '0' : '-5' }}">
+    @endif
+    <div class="invalid-feedback">Punkty muszą być liczbą całkowitą z zakresu od 0 do {{ $training->max_points }}.</div>
+</div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Zapisz</button>
+            </div>
+        </form>
+    </div>
+</div>
     </div>
     @include('shared.footer')
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusSelect = document.getElementById('status');
+        const pointsInput = document.getElementById('points');
+
+        statusSelect.addEventListener('change', function() {
+            if (statusSelect.value === 'nieobecność usprawiedliwiona') {
+                pointsInput.value = '0';
+                pointsInput.setAttribute('readonly', true);
+            } else if (statusSelect.value === 'nieobecność nieusprawiedliwiona') {
+                pointsInput.value = '-5';
+                pointsInput.setAttribute('readonly', true);
+            } else {
+                pointsInput.removeAttribute('readonly');
+            }
+        });
+
+        // Inicjalna obsługa
+        if (statusSelect.value === 'nieobecność usprawiedliwiona' || statusSelect.value === 'nieobecność nieusprawiedliwiona') {
+            pointsInput.setAttribute('readonly', true);
+        }
+    });
+</script>
+
 </html>

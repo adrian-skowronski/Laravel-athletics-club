@@ -30,17 +30,17 @@ class Training extends Model
 
     public function userCanSignUp($user)
     {
-        // Sprawdź, czy użytkownik jest sportowcem i uprawia ten sam sport, co trener prowadzący trening
+        // czy użytkownik jest sportowcem i uprawia ten sam sport, co trener prowadzący trening
         if ($user->role_id != 3 || $user->sport_id != $this->trainer->sport->sport_id) {
             return false;
         }
 
-        // Sprawdź, czy użytkownik jest już zapisany na ten trening
+        // czy użytkownik jest już zapisany na ten trening
         if ($user->trainings()->where('training_user.training_id', $this->id)->exists()) {
             return false;
         }
 
-        // Sprawdź, czy użytkownik jest zapisany na inny trening w tym samym dniu
+        // czy użytkownik jest zapisany na inny trening w tym samym dniu
         $sameDayTrainings = $user->trainings()->whereDate('trainings.date', $this->date)->count();
         if ($sameDayTrainings > 0) {
             return false;
@@ -48,13 +48,22 @@ class Training extends Model
 
         $trainingWeek = Carbon::parse($this->date)->startOfWeek();
 
-        // Sprawdź, czy użytkownik jest zapisany na więcej niż 3 treningi w tygodniu treningu
+        // czy użytkownik jest zapisany na więcej niż 3 treningi w tygodniu treningu
         $weekTrainings = $user->trainings()
             ->whereBetween('trainings.date', [$trainingWeek, $trainingWeek->copy()->endOfWeek()])
             ->count();
         if ($weekTrainings >= 3) {
             return false;
         }
+
+        // czy dzień treningu już nadszedł
+        $now = Carbon::now();
+        $trainingStart = Carbon::parse($this->date)->startOfDay();
+        if(!$now->lt($trainingStart))
+        {
+            return false;
+        }
+        
 
 
         return true;

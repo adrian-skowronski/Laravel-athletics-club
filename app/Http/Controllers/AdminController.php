@@ -79,22 +79,4 @@ class AdminController extends Controller
         return view('admin.event_registration', compact('events'));
     }
 
-    public function fetchEligibleAthletes(Request $request)
-    {
-        $event = Event::findOrFail($request->event_id);
-        $athletes = User::where('category_id', '>=', $event->required_category_id)->get();
-        $events = Event::where('date', '>', now())->get();
-
-        return view('admin.event_registration', compact('events', 'athletes', 'event'));
     }
-
-    public function registerAthletesToEvent(Request $request)
-    {
-        $event = Event::findOrFail($request->event_id);
-        $athletes = $request->input('athletes', []);
-
-        $event->users()->attach($athletes);
-
-        return redirect()->route('admin.event_registration')->with('success', 'Zawodnicy zostali zapisani na wydarzenie.');
-    }
-}

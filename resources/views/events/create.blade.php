@@ -30,10 +30,15 @@
                     </div>
 
                     <div class="form-group mb-2">
-                        <label for="category" class="form-label">Kategoria</label>
-                        <input id="category" name="category" type="text" class="form-control @error('category') is-invalid @enderror" value="{{ old('category') }}">
-                        <div class="invalid-feedback">Nieprawidłowa kategoria!</div>
-                    </div>
+                <label for="required_category_id" class="form-label">Wymagana kategoria</label>
+                <select id="required_category_id" name="required_category_id" class="form-select @error('required_category_id') is-invalid @enderror">
+                    <option value="">Wybierz kategorię</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->category_id }}" {{ old('required_category_id') == $category->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+                <div class="invalid-feedback">Nieprawidłowa kategoria!</div>
+            </div>
 
                     <div class="form-group mb-2">
                         <label for="age_from" class="form-label">Wiek od</label>

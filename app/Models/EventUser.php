@@ -13,7 +13,7 @@ class EventUser extends Model
     protected $table = 'event_user';
 
     protected $fillable = [
-        'event_id', 'user_id'
+        'event_id', 'user_id', 'points'
     ];
 
     public function event()

@@ -62,7 +62,8 @@
                             <td>{{ $user->category ? $user->category->name : 'Brak kategorii' }}</td>
                             <td>{{ $user->sport ? $user->sport->name : 'Brak sportu' }}</td>
                             <td>{{ $user->approved ? 'Tak' : 'Nie' }}</td>
-                            <td><img src="{{ asset($user->photo) }}" alt="Zdjęcie użytkownika" style="max-width: 100px; max-height: 100px;"></td>
+                            <td>                    <img src="{{ asset('storage/' . $user->photo) }}" alt="User Photo" style="max-width: 50px; max-height: 50px;">
+                            </td>
                             <td>
                                 <a href="{{ route('users.edit', $user->user_id) }}" class="btn btn-primary">Edytuj</a>
                                 <form method="POST" action="{{ route('users.destroy', $user->user_id) }}" style="display:inline;">

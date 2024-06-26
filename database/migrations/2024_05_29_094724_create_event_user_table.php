@@ -11,6 +11,7 @@ class CreateEventUserTable extends Migration
         Schema::create('event_user', function (Blueprint $table) {
             $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('user_id');
+            $table->integer('points')->default(0);
             $table->timestamps();
 
             $table->foreign('event_id')->references('event_id')->on('events');

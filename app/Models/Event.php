@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+
 class Event extends Model
 {
     use HasFactory;
@@ -18,16 +19,11 @@ class Event extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'event_hill', 'event_id', 'user_id');
-    }
-
-    public function sports()
-    {
-        return $this->belongsToMany(Sport::class, 'event_sport', 'event_id', 'sport_id');
+        return $this->belongsToMany(User::class, 'event_user', 'event_id', 'user_id');
     }
 
     public function requiredCategory()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'required_category_id');
     }
 }

@@ -1,5 +1,5 @@
 @include('shared.html')
-@include('shared.head', ['pageTitle' => 'Edytuj Profil'])
+@include('shared.head', ['pageTitle' => 'Dane trenera'])
 
 <body>
     @include('shared.navbar')
