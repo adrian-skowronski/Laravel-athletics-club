@@ -2,17 +2,6 @@
 
 use Illuminate\Support\Facades\Schema;
 
-//LISTA NAZW TABEL
-$tables = ['users', 'trainings', 'events', 'sports', 'event_user'];
-
-//TŁUMACZENI NA POLSKI W TABLICY ASOCJACYJNEJ
-$tableNames = [
-    'users' => 'Użytkownicy',
-    'trainings' => 'Treningi',
-    'events' => 'Wydarzenia',
-    'sports' => 'Sporty',
-    'event_user' => 'Uczestnicy wydarzeń',
-];
 ?>
 
 @include('shared.html')
@@ -20,6 +9,21 @@ $tableNames = [
 
 <body>
 @include('shared.navbar')
+<div class="container mt-3">
+@include('shared.session-error')
+@include('shared.validation-error')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+</div>
 <section id="zasoby">
     <div class="container mt-3">
         <h1>Zarządzanie zasobami aplikacji</h1>
@@ -31,14 +35,36 @@ $tableNames = [
                 </tr>
             </thead>
             <tbody>
-                @foreach($tables as $table)
                 <tr>
-                    <td>{{ $tableNames[$table] ?? $table }}</td>
+                    <td>Użytkownicy</td>
                     <td>
-                    <a href="{{ route('admin.table', ['table' => $table]) }}" class="btn btn-primary">Przejdź do zasobu</a>
+                        <a href="{{ route('users.index') }}" class="btn btn-primary">Przejdź do zasobu</a>
                     </td>
                 </tr>
-                @endforeach
+                <tr>
+                    <td>Treningi</td>
+                    <td>
+                        <a href="{{ route('trainings.index') }}" class="btn btn-primary">Przejdź do zasobu</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Wydarzenia</td>
+                    <td>
+                        <a href="{{ route('events.index') }}" class="btn btn-primary">Przejdź do zasobu</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sporty</td>
+                    <td>
+                        <a href="{{ route('sports.index') }}" class="btn btn-primary">Przejdź do zasobu</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Uczestnicy wydarzeń</td>
+                    <td>
+                        <a href="{{ route('event-user.index') }}" class="btn btn-primary">Przejdź do zasobu</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
         
@@ -63,7 +89,8 @@ $tableNames = [
                     <th>Email</th>
                     <th>Telefon</th>
                     <th>Data urodzenia</th>
-                    <th>Akcja</th>
+                    <th>Zatwierdź</th>
+                    <th>Odrzuć</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,8 +102,11 @@ $tableNames = [
                     <td>{{ $user->phone }}</td>
                     <td>{{ $user->birthdate }}</td>
                     <td>
+                
                         <a href="{{ route('admin.approve', $user->user_id) }}" class="btn btn-success">Zatwierdź</a>
-                        <form action="{{ route('admin.reject', $user->user_id) }}" method="POST" style="display:inline;">
+</td>
+<td>
+                        <form action="{{ route('admin.reject', $user->user_id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Odrzuć</button>

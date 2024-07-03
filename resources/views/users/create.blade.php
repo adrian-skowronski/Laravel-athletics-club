@@ -14,37 +14,37 @@
 
         <div class="row d-flex justify-content-center">
             <div class="col-6">
-            <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
-            @csrf
+                <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
+                    @csrf
 
                     <div class="form-group mb-2">
                         <label for="name" class="form-label">Imię</label>
-                        <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
+                        <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required maxlength="100">
                         <div class="invalid-feedback">Nieprawidłowe imię!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="surname" class="form-label">Nazwisko</label>
-                        <input id="surname" name="surname" type="text" class="form-control @error('surname') is-invalid @enderror" value="{{ old('surname') }}">
+                        <input id="surname" name="surname" type="text" class="form-control @error('surname') is-invalid @enderror" value="{{ old('surname') }}" required maxlength="100">
                         <div class="invalid-feedback">Nieprawidłowe nazwisko!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="email" class="form-label">E-mail</label>
-                        <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
+                        <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required maxlength="120">
                         <div class="invalid-feedback">Nieprawidłowy adres e-mail!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="password" class="form-label">Hasło</label>
-                        <input id="password" name="password" type="password" class="form-control @error('password') is-invalid @enderror">
-                        <div class="invalid-feedback">Nieprawidłowe hasło!</div>
+                        <input id="password" name="password" type="password" class="form-control @error('password') is-invalid @enderror" required minlength="8" maxlength="100">
+                        <div class="invalid-feedback">Nieprawidłowe hasło! Hasło musi mieć co najmniej 8 znaków.</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="birthdate" class="form-label">Data urodzenia</label>
-                        <input id="birthdate" name="birthdate" type="date" class="form-control @error('birthdate') is-invalid @enderror" value="{{ old('birthdate') }}">
-                        <div class="invalid-feedback">Nieprawidłowa data urodzenia!</div>
+                        <input id="birthdate" name="birthdate" type="date" class="form-control @error('birthdate') is-invalid @enderror" value="{{ old('birthdate') }}" required min="1920-01-01">
+                        <div class="invalid-feedback">Nieprawidłowa data urodzenia! Data urodzenia musi być późniejsza niż 01-01-1920.</div>
                     </div>
 
                     <div class="form-group mb-2">
@@ -55,8 +55,8 @@
 
                     <div class="form-group mb-2">
                         <label for="phone" class="form-label">Telefon</label>
-                        <input id="phone" name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}">
-                        <div class="invalid-feedback">Nieprawidłowy numer telefonu!</div>
+                        <input id="phone" name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" required pattern="\d{9,11}">
+                        <div class="invalid-feedback">Nieprawidłowy numer telefonu! Numer telefonu powinien mieć od 9 do 11 cyfr.</div>
                     </div>
 
                     <div class="form-group mb-2">
@@ -94,7 +94,7 @@
 
                     <div class="form-group mb-2">
                         <label for="approved" class="form-label">Zatwierdzony</label>
-                        <select id="approved" name="approved" class="form-select @error('approved') is-invalid @enderror">
+                        <select id="approved" name="approved" class="form-select @error('approved') is-invalid @enderror" required>
                             <option value="0" @if (old('approved') == '0') selected @endif>Nie</option>
                             <option value="1" @if (old('approved') == '1') selected @endif>Tak</option>
                         </select>
@@ -103,8 +103,8 @@
 
                     <div class="form-group mb-2">
                         <label for="photo" class="form-label">Zdjęcie</label>
-                        <input id="photo" name="photo" type="file" class="form-control @error('photo') is-invalid @enderror">
-                        <div class="invalid-feedback">Nieprawidłowe zdjęcie!</div>
+                        <input id="photo" name="photo" type="file" class="form-control @error('photo') is-invalid @enderror" accept="image/*">
+                        <div class="invalid-feedback">Nieprawidłowe zdjęcie! Maksymalny rozmiar pliku to 5MB.</div>
                     </div>
 
                     <div class="text-center mt-4 mb-4">

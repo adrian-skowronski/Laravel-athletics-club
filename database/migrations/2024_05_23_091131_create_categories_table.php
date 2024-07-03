@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id('category_id');
-            $table->string('name');
-            $table->integer('min_points');
+            $table->string('name', 100)->unique();
+            $table->smallInteger('min_points');
             $table->timestamps();
         });
     }

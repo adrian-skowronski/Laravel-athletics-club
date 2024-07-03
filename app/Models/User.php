@@ -9,7 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Events\PointsUpdated;
+
 
 class User extends Authenticatable
 {
@@ -70,7 +70,4 @@ public function isAthlete()
         return $this->belongsToMany(Training::class, 'training_user', 'user_id', 'training_id');
     }
 
-    protected $dispatchesEvents = [
-        'updated' => PointsUpdated::class,
-    ];
 }

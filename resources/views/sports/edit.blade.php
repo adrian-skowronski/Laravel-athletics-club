@@ -20,8 +20,8 @@
                     
                     <div class="form-group mb-2">
                         <label for="name" class="form-label">Nazwa</label>
-                        <input id=" name" name="name" type="text" class="form-control @if ($errors->first('name')) is-invalid @endif" value="{{ $sport->name }}">
-                        <div class="invalid-feedback">Nieprawidłowy opis!</div>
+                        <input id=" name" name="name" type="text" class="form-control @if ($errors->first('name')) is-invalid @endif" value="{{ $sport->name }}" required maxlength="100">
+                        <div class="invalid-feedback">Nieprawidłowa nazwa!</div>
                     </div>
                 
                     <div class="text-center mt-4 mb-4">

@@ -29,7 +29,7 @@
                     <td>{{ $user->pivot->points }}</td>
                     <td>
                     @if(!Carbon\Carbon::parse($training->date . ' ' . $training->end_time)->lt(Carbon\Carbon::now()))
-                    <form method="POST" action="{{ route('trainer.removeParticipant', ['training_id' => $training->training_id, 'user_id' => $user->user_id]) }}" style="display:inline;">
+                    <form method="POST" action="{{ route('trainer.removeParticipant', ['training_id' => $training->training_id, 'user_id' => $user->user_id]) }}">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz wypisać z treningu tego zawodnika?')">Wypisz</button>

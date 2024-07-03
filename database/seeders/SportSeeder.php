@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Sport;
 
@@ -16,10 +15,20 @@ class SportSeeder extends Seeder
     {
         Sport::firstOrCreate([
             'name' => 'biegi krótkodystansowe',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]
         );
         Sport::firstOrCreate([
             'name' => 'skoki wzwyż',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]
+        );
+        Sport::firstOrCreate([
+            'name' => 'skoki w dal',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]
         );
     }

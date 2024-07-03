@@ -70,7 +70,7 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($user_id);
         $user->delete();
-        return redirect()->route('admin.requests')->with('success', 'Użytkownik odrzucony.');
+        return redirect()->route('admin.index')->with('success', 'Użytkownik odrzucony.');
     }
 
     public function showEventRegistration()

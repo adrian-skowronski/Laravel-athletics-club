@@ -10,10 +10,12 @@ class EventUser extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'event_user_id';
+    
     protected $table = 'event_user';
 
     protected $fillable = [
-        'event_id', 'user_id', 'points'
+        'event_user_id', 'event_id', 'user_id', 'points'
     ];
 
     public function event()

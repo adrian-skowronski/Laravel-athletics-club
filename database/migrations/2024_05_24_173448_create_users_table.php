@@ -10,25 +10,23 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id');
-            $table->string('name');
-            $table->string('surname');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('name', 100);
+            $table->string('surname', 100);
+            $table->string('email', 120)->unique();
+            $table->string('password', 100);
             $table->date('birthdate');
-            $table->integer('points')->nullable();
-            $table->string('phone');
+            $table->smallInteger('points')->nullable();
+            $table->string('phone', 11);
             $table->unsignedBigInteger('sport_id')->nullable();
+            $table->foreign('sport_id')->references('sport_id')->on('sports')->onDelete('restrict');
             $table->unsignedBigInteger('role_id')->nullable();
+            $table->foreign('role_id')->references('role_id')->on('roles')->onDelete('restrict');
             $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreign('category_id')->references('category_id')->on('categories')->onDelete('restrict');
             $table->string('photo')->nullable();
             $table->boolean('approved')->default(false);
             $table->rememberToken();
             $table->timestamps();
-
-            $table->foreign('role_id')->references('role_id')->on('roles');
-            $table->foreign('sport_id')->references('sport_id')->on('sports');
-            $table->foreign('category_id')->references('category_id')->on('categories');
-
         });
     }
 

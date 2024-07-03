@@ -19,23 +19,41 @@ class EventSeeder extends Seeder
                 'age_from' => 20,
                 'age_to' => 40,
                 'name' => 'Puchar Prezesa',
-                'description' => 'Zapraszamy do Krakowa!',
-                'date' => '2024-06-06',
+                'description' => 'Zawody w Krakowie',
+                'date' => '2024-07-03',
                 'start_hour' => '09:00:00',
                 'max_participants' => 40,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
             );
             Event::firstOrCreate(
                 [
                     'required_category_id' => '2',
-                    'age_from' => 20,
+                    'age_from' => 19,
                     'age_to' => 99,
                     'name' => 'Mistrzostwa Województwa',
-                    'description' => 'Zapraszamy do Rzeszowa!',
-                    'date' => '2024-06-08',
-                    'start_hour' => '11:30:00',  
-                    'max_participants' => 60,  
+                    'description' => 'Zapraszamy!',
+                    'date' => '2024-07-18',
+                    'start_hour' => '09:30:00',  
+                    'max_participants' => 60, 
+                    'created_at' => now(),
+                    'updated_at' => now(), 
                 ]
                 );
+                Event::firstOrCreate(
+                    [
+                        'required_category_id' => '1',
+                        'age_from' => 4,
+                        'age_to' => 18,
+                        'name' => 'Mistrzostwa Juniorów',
+                        'description' => 'Kategorie wiekowe: 4-18 lat!',
+                        'date' => '2024-07-28',
+                        'start_hour' => '11:30:00',  
+                        'max_participants' => 20,  
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                    );
     }
 }

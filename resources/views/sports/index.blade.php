@@ -7,19 +7,27 @@
     
     @include('shared.navbar')
 
+
     <div class="container mt-5 mb-5">
+    @include('shared.session-error')
+    @include('shared.validation-error')
         <div class="row mt-5 mb-3">
             <h1>Lista sportów</h1>
         </div>
-        <div class="row mb-3 mt-3 p-3 d-flex justify-content-center">
-            <a href="{{ route('sports.create') }}" class="btn btn-primary" style="width: auto; white-space: nowrap;">Dodaj nowy sport</a>
-        </div>
+        <div class="row mb-3 mt-3">
+    <div class="col d-flex justify-content-center">
+        <a href="{{ route('sports.create') }}" class="btn btn-primary">Dodaj nowy sport</a>
+    </div>
+</div>
+
         <div class="row">
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
                         <th scope="col">ID sportu</th>
                         <th scope="col">Nazwa</th>
+                        <th scope="col">Edytuj</th>
+                        <th scope="col">Usuń</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,8 +36,10 @@
                             <td>{{ $sport->sport_id }}</td>
                             <td>{{ $sport->name }}</td>
                             <td>
-                                <a href="{{ route('sports.edit', $sport->sport_id) }}" class="btn btn-warning">Edycja</a>
-                                <form method="POST" action="{{ route('sports.destroy', $sport->sport_id) }}" style="display:inline;">
+                                <a href="{{ route('sports.edit', $sport->sport_id) }}" class="btn btn-warning">Edytuj</a>
+</td>
+<td>
+                                <form method="POST" action="{{ route('sports.destroy', $sport->sport_id) }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć?')">Usuń</button>

@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Category;
 use App\Models\Sport;
-use App\Events\PointsUpdated;
 
 class UserController extends Controller
 {
@@ -42,15 +41,15 @@ class UserController extends Controller
             'name' => 'required|string|max:100',
             'surname' => 'required|string|max:100',
             'email' => 'required|email|unique:users|max:120',
-            'password' => 'required|string|min:8',
-            'birthdate' => 'required|date',
+            'password' => 'required|string|min:8|max:100',
+            'birthdate' => 'required|date|after_or_equal:1920-01-01',
             'points' => 'nullable|integer',
             'phone' => 'required|string|max:11|min:9',
             'role_id' => 'nullable|exists:roles,role_id',
             'category_id' => 'nullable|exists:categories,category_id',
             'sport_id' => 'nullable|exists:sports,sport_id',
             'approved' => 'required|boolean',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -65,13 +64,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Użytkownik został pomyślnie dodany.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show()
-    {
-    }
-
+   
     /**
      * Show the form for editing the specified resource.
      */
@@ -95,15 +88,15 @@ class UserController extends Controller
             'name' => 'required|string|max:100',
             'surname' => 'required|string|max:100',
             'email' => 'required|email|max:120',
-            'password' => 'string|min:8',
-            'birthdate' => 'required|date',
+            'password' => 'string|min:8|max:100',
+            'birthdate' => 'required|date|after_or_equal:1920-01-01',
             'points' => 'nullable|integer',
             'phone' => 'required|string|max:11|min:9',
             'role_id' => 'nullable|exists:roles,role_id',
             'category_id' => 'nullable|exists:categories,category_id',
             'sport_id' => 'nullable|exists:sports,sport_id',
             'approved' => 'required|boolean',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ]);
 
         

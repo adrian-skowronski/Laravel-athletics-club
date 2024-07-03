@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\EventUser;
 
 class AthletePanelController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-
+        $eventUser = EventUser::get();
         $birthdate = Carbon::parse(Auth::user()->birthdate);
         $age = $birthdate->age;
 

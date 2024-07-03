@@ -1,35 +1,22 @@
 @include('shared.html')
 @include('shared.head', ['pageTitle' => 'Lista użytkowników - panel admina'])
 
-<style>
-    .pagination {
-        display: flex;
-        justify-content: center;
-    }
-    .pagination .page-item {
-        margin: 0 5px;
-    }
-    .pagination .page-link {
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-</style>
-
 <body>
     
     @include('shared.navbar')
 
     <div class="container mt-5 mb-5">
+    @include('shared.session-error')
+    @include('shared.validation-error')
         <div class="row mt-5 mb-3">
             <h1>Lista użytkowników</h1>
         </div>
-        <div class="row mb-3 mt-3 p-3 d-flex justify-content-center">
-            <a href="{{ route('users.create') }}" class="btn btn-primary" style="width: auto; white-space: nowrap;">Dodaj nowego użytkownika</a>
-        </div>
+        <div class="row mb-3 mt-3">
+    <div class="col d-flex justify-content-center">
+        <a href="{{ route('users.create') }}" class="btn btn-primary">Dodaj nowego użytkownika</a>
+    </div>
+</div>
+
         
         <div class="row">
             <table class="table table-hover table-striped">
@@ -45,8 +32,8 @@
                         <th scope="col">Kategoria</th>
                         <th scope="col">Sport</th>
                         <th scope="col">Zatwierdzony</th>
-                        <th scope="col">Zdjęcie</th>
-                        <th scope="col">Akcje</th>
+                        <th scope="col">Edytuj</th>
+                        <th scope="col">Usuń</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,11 +49,12 @@
                             <td>{{ $user->category ? $user->category->name : 'Brak kategorii' }}</td>
                             <td>{{ $user->sport ? $user->sport->name : 'Brak sportu' }}</td>
                             <td>{{ $user->approved ? 'Tak' : 'Nie' }}</td>
-                            <td>                    <img src="{{ asset('storage/' . $user->photo) }}" alt="User Photo" style="max-width: 50px; max-height: 50px;">
-                            </td>
+                            
                             <td>
                                 <a href="{{ route('users.edit', $user->user_id) }}" class="btn btn-primary">Edytuj</a>
-                                <form method="POST" action="{{ route('users.destroy', $user->user_id) }}" style="display:inline;">
+</td>
+<td>
+                                <form method="POST" action="{{ route('users.destroy', $user->user_id) }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć?')">Usuń</button>
@@ -83,12 +71,12 @@
         </div>
         
         <div class="row">
-        <div class="mt-2">
-            {{ $users->links('pagination::bootstrap-4') }}
-            </div>
-        </div>
+    <div class="d-flex justify-content-center mt-2">
+        {{ $users->links('pagination::bootstrap-4') }}
+    </div>
+</div>
 
-        <div class="row mt-3">
+        <div class="row justify-content-center mt-3">
             <div class="col text-center">
                 <a href="{{ route('admin.index') }}" class="btn btn-secondary">Powróć do panelu admina</a>
             </div>

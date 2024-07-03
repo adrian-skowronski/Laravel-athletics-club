@@ -16,7 +16,7 @@ class CategorySeeder extends Seeder
         Category::firstOrCreate(
             [
                 'name' => 'nowicjusz',
-                'min_points' => 0,
+                'min_points' => -20,
             ]
             );
         Category::firstOrCreate(

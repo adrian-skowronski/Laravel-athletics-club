@@ -19,10 +19,13 @@ class AthleteController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'birthdate' => 'required|date',
-            'phone' => 'required|string|max:11',
+            'name' => 'required|string|max:100',
+            'surname' => 'required|string|max:100',
+'birthdate' => [
+            'required',
+            'date',
+            'after_or_equal:1920-01-01', 
+        ],            'phone' => 'required|string|max:11',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', 
         ]);
 

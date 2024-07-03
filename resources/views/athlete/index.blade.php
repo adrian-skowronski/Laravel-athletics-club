@@ -1,11 +1,22 @@
-{{-- athlete.panel --}}
 @include('shared.html')
 @include('shared.head', ['pageTitle' => 'Panel Sportowca'])
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <body>
     @include('shared.navbar')
+   
     <div class="container mt-5">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
         <div class="user-info mb-5">
         <div class="row">
         <div class="col-sm">
@@ -24,14 +35,15 @@
         </div>
 
         <div class="col-sm">
-        @if(Auth::user()->photo)
-                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User Photo" style="max-width: 250px; max-height: 250px;">
-                    @else
-                    <div class="mt-5">
-                        <i>Brak wgranego zdjęcia użytkownika.</i>
-                        </div>
-                    @endif
+    @if(Auth::user()->photo)
+        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User Photo" class="user-photo">
+    @else
+        <div class="mt-5">
+            <i>Brak wgranego zdjęcia użytkownika.</i>
+        </div>
+    @endif
 </div>
+
 <div class="col-sm"></div>
 </div>
 <div class="mt-5">
@@ -61,7 +73,7 @@
                     <td>{{ $training->points }}</td>
                     <td>
                     @if(!Carbon\Carbon::parse($training->date . ' ' . $training->end_time)->lt(Carbon\Carbon::now()))
-                    <form method="POST" action="{{ route('athlete.removeTraining') }}" style="display: inline;">
+                    <form method="POST" action="{{ route('athlete.removeTraining') }}">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="training_id" value="{{ $training->training_id }}">
@@ -86,7 +98,7 @@
                 <tr>
                     <th>Nazwa</th>
                     <th>Data</th>
-                    <th>Status</th>
+                    <th>Godzina</th>
                 </tr>
             </thead>
             <tbody>
@@ -94,8 +106,8 @@
                 <tr>
                     <td>{{ $event->name }}</td>
                     <td>{{ $event->date }}</td>
-                    <td>{{ \Carbon\Carbon::parse($event->date)->isPast() ? 'Archiwalna' : 'Przyszłe' }}</td>
-                </tr>
+                    <td>{{ $event->start_hour }}</td>             
+                   </tr>
                 @endforeach
             </tbody>
         </table>
@@ -123,17 +135,18 @@
 
         <div class="container mt-5">
     <div class="row">
-        <div class="col-md-6">
-            <div class="chart-container" style="position: relative; height: 40vh; width: 100%;">
-                <canvas id="timeSpentChart"></canvas>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="chart-container" style="position: relative; height: 40vh; width: 100%;">
-                <canvas id="trainingCountChart"></canvas>
-            </div>
+    <div class="col-md-6">
+        <div class="chart-container h-100 w-100 position-relative">
+            <canvas id="timeSpentChart"></canvas>
         </div>
     </div>
+    <div class="col-md-6">
+        <div class="chart-container h-100 w-100 position-relative">
+            <canvas id="trainingCountChart"></canvas>
+        </div>
+    </div>
+</div>
+
 </div>
 </div>
 </div>

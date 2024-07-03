@@ -13,11 +13,15 @@
             <li class="mb-2"><strong>Telefon:</strong> {{ $trainer->phone }}</li>
             <li class="mb-2">
                 <strong>Zdjęcie:</strong><br>
-                @if($trainer->photo)
-                <img class="mt-2" src="{{ asset('storage/' . $trainer->photo) }}" alt="User Photo" style="max-width: 250px; max-height: 250px;">
-                @else
-                Brak zdjęcia
-                @endif
+                <div class="col-sm">
+    @if(($trainer)->photo)
+        <img src="{{ asset('storage/' . $trainer->photo) }}" alt="User Photo" class="user-photo">
+    @else
+        <div class="mt-5">
+            <i>Brak wgranego zdjęcia trenera.</i>
+        </div>
+    @endif
+</div>
             </li>
         </ul>
 

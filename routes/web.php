@@ -44,15 +44,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/trainer', [TrainerController::class, 'index'])->name('trainer.index');
         Route::get('/trainer/edit', [TrainerController::class, 'edit'])->name('trainer.edit');
         Route::post('/trainer/update', [TrainerController::class, 'update'])->name('trainer.update');
-        Route::get('/training/{training_id}/participants', [TrainerController::class, 'viewParticipants'])->name('trainer.viewParticipants');
-        Route::get('/training/{training_id}/participant/{user_id}/edit', [TrainerController::class, 'editStatus'])->name('trainer.editStatus');
-        Route::patch('/training/{training_id}/participant/{user_id}', [TrainerController::class, 'updateStatus'])->name('trainer.updateStatus');    
+        Route::get('/trainings/{training_id}/participants', [TrainerController::class, 'viewParticipants'])->name('trainer.viewParticipants');
+        Route::get('/trainings/{training_id}/participants/{user_id}/edit', [TrainerController::class, 'editStatus'])->name('trainer.editStatus');
+        Route::patch('/trainings/{training_id}/participants/{user_id}', [TrainerController::class, 'updateStatus'])->name('trainer.updateStatus');    
         Route::get('/trainer/create-training', [TrainerController::class, 'createTraining'])->name('trainer.createTraining');
         Route::post('/trainer/store-training', [TrainerController::class, 'storeTraining'])->name('trainer.storeTraining');
-        Route::get('/trainer/{training_id}/edit', [TrainerController::class, 'trainingEdit'])->name('trainer.editTraining');
-        Route::put('/trainer/{training_id}/update', [TrainerController::class, 'trainingUpdate'])->name('trainer.updateTraining');
-        Route::delete('/trainer/{training_id}', [TrainerController::class, 'trainingDestroy'])->name('trainer.trainingDestroy');
-        Route::delete('/training/{training_id}/participants/{user_id}', [TrainerController::class, 'removeParticipant'])->name('trainer.removeParticipant');
+        Route::get('/trainer/trainings/{training_id}/edit', [TrainerController::class, 'trainingEdit'])->name('trainer.editTraining');
+        Route::put('/trainer/trainings/{training_id}/update', [TrainerController::class, 'trainingUpdate'])->name('trainer.updateTraining');
+        Route::delete('/trainer/trainings/{training_id}', [TrainerController::class, 'trainingDestroy'])->name('trainer.trainingDestroy');
+        Route::delete('/trainings/{training_id}/participants/{user_id}', [TrainerController::class, 'removeParticipant'])->name('trainer.removeParticipant');
 
     });
 
@@ -62,32 +62,34 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/approve/{user}', [AdminController::class, 'approve'])->name('admin.approve');
         Route::post('/admin/store-approval/{user}', [AdminController::class, 'storeApproval'])->name('admin.storeApproval');
         Route::delete('/admin/reject/{user}', [AdminController::class, 'reject'])->name('admin.reject');
+       
+    Route::prefix('event-user')->group(function () {
+        Route::get('/', [EventUserController::class, 'index'])->name('event-user.index');
+        Route::get('select-athletes/{event_id}', [EventUserController::class, 'selectAthletes'])->name('event-user.select_athletes');
+        Route::post('store', [EventUserController::class, 'store'])->name('event-user.store');
+        Route::get('edit/{event_user_id}', [EventUserController::class, 'edit'])->name('event-user.edit');
+        Route::put('update/{event_user_id}', [EventUserController::class, 'update'])->name('event-user.update');
+        Route::delete('destroy/{event_user_id}', [EventUserController::class, 'destroy'])->name('event-user.destroy');
+    });
 
-        Route::get('/admin/{table}', function ($table) {
-            if (Schema::hasTable($table)) {
-                return redirect()->route($table . '.index');
-            } else {
-                abort(404);
-            }
-        })->name('admin.table');
         Route::resource('events', EventController::class);
     Route::resource('sports', SportController::class);
+    Route::resource('event-user', EventUserController::class);
     Route::resource('users', UserController::class);
-    Route::resource('event_user', EventUserController::class);
-    Route::get('/event_user/create', [EventUserController::class, 'create'])->name('event_user.create');
-    Route::post('/event_user/store', [EventUserController::class, 'store'])->name('event_user.store');
-    Route::get('/event-user/{event}/athletes', [EventUserController::class, 'eligibleAthletes'])->name('event_user.athletes');
+    
 
 });
 
 
-    Route::get('/trainer/{user_id}', [TrainerController::class, 'show'])->name('trainer.details');
+    Route::get('/trainers/{user_id}', [TrainerController::class, 'show'])->name('trainer.details');
 });
 
 
 
-Route::get('/treningi', [TrainingController::class, 'view'])->name('trainings.view');
-Route::get('/zawody', [EventController::class, 'view'])->name('events.view');
-Route::get('/trainer/{user_id}', [TrainerController::class, 'show'])->name('trainer.details');
+Route::get('/trainings-view', [TrainingController::class, 'view'])->name('trainings.view');
+Route::get('/events-view', [EventController::class, 'view'])->name('events.view');
+Route::get('/trainers/{user_id}', [TrainerController::class, 'show'])->name('trainer.details');
+
+Route::view('/error/data', 'errors.data')->name('error.data');
 
 require __DIR__.'/auth.php';

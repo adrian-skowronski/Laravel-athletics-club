@@ -10,16 +10,14 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id('event_id');
-            $table->unsignedBigInteger('required_category_id');
-            $table->foreign('required_category_id')->references('category_id')->on('categories');
-            $table->integer('age_from')->nullable();
-            $table->integer('age_to')->nullable();
-            $table->string('name');
-            $table->text('description')->nullable();
+            $table->foreignId('required_category_id')->constrained('categories', 'category_id');
+            $table->unsignedSmallInteger('age_from');
+            $table->unsignedSmallInteger('age_to');
+            $table->string('name', 100);
+            $table->text('description', 500)->nullable();
             $table->date('date');
             $table->time('start_hour');
-            $table->integer('max_participants');
-            $table->string('photo')->nullable();
+            $table->unsignedSmallInteger('max_participants');
             $table->timestamps();
         });
     }

@@ -15,13 +15,13 @@ class CreateTrainingsTable extends Migration
     {
         Schema::create('trainings', function (Blueprint $table) {
             $table->id('training_id');
-            $table->text('description');
+            $table->text('description',500);
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
-            $table->unsignedBigInteger('trainer_id');
+            $table->foreignId('trainer_id');
             $table->foreign('trainer_id')->references('user_id')->on('users');
-            $table->integer('max_points')->default(0);
+            $table->unsignedSmallInteger('max_points')->default(0);
             $table->timestamps();
         });
     }

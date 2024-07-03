@@ -26,4 +26,6 @@ class Event extends Model
     {
         return $this->belongsTo(Category::class, 'required_category_id');
     }
+
+    
 }

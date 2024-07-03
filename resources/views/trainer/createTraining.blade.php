@@ -19,31 +19,31 @@
 
                     <div class="form-group mb-2">
                         <label for="description" class="form-label">Opis</label>
-                        <input id="description" name="description" type="text" class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}">
+                        <input id="description" name="description" type="text" class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}" required maxlength="500">
                         <div class="invalid-feedback">Nieprawidłowy opis!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="date" class="form-label">Dzień</label>
-                        <input id="date" name="date" type="date" class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}">
+                        <input id="date" name="date" type="date" class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}" required>
                         <div class="invalid-feedback">Nieprawidłowy dzień!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="start_time" class="form-label">Godzina rozpoczęcia</label>
-                        <input id="start_time" name="start_time" type="time" class="form-control @error('start_time') is-invalid @enderror" value="{{ old('start_time') }}">
+                        <input id="start_time" name="start_time" type="time" class="form-control @error('start_time') is-invalid @enderror" value="{{ old('start_time') }}" required>
                         <div class="invalid-feedback">Nieprawidłowa godzina rozpoczęcia!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="end_time" class="form-label">Godzina zakończenia</label>
-                        <input id="end_time" name="end_time" type="time" class="form-control @error('end_time') is-invalid @enderror" value="{{ old('end_time') }}">
+                        <input id="end_time" name="end_time" type="time" class="form-control @error('end_time') is-invalid @enderror" value="{{ old('end_time') }}" required>
                         <div class="invalid-feedback">Nieprawidłowa godzina zakończenia!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="max_points" class="form-label">Maksymalna liczba punktów</label>
-                        <input id="max_points" name="max_points" type="number" class="form-control @error('max_points') is-invalid @enderror" value="{{ old('max_points') }}">
+                        <input id="max_points" name="max_points" type="number" class="form-control @error('max_points') is-invalid @enderror" value="{{ old('max_points') }}" min="0" max="200">
                         <div class="invalid-feedback">Nieprawidłowa maksymalna liczba punktów!</div>
                     </div>
 

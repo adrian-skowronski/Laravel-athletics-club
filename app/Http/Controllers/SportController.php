@@ -29,21 +29,15 @@ class SportController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:100',
+        $request->validate([
+            'name' => 'required|string|max:100|unique:sports',
         ]);
         
         Sport::create($request->all());
         return redirect()->route('sports.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -60,7 +54,7 @@ class SportController extends Controller
     public function update(Request $request, $sport_id)
     {
         $request->validate([
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:100|unique:sports',
         ]);
 
         $sport = Sport::findOrFail($sport_id);

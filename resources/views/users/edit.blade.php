@@ -20,25 +20,25 @@
 
                     <div class="form-group mb-2">
                         <label for="name" class="form-label">Imię</label>
-                        <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user->name) }}">
+                        <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user->name) }}" required maxlength="100">
                         <div class="invalid-feedback">Nieprawidłowe imię!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="surname" class="form-label">Nazwisko</label>
-                        <input id="surname" name="surname" type="text" class="form-control @error('surname') is-invalid @enderror" value="{{ old('surname', $user->surname) }}">
+                        <input id="surname" name="surname" type="text" class="form-control @error('surname') is-invalid @enderror" value="{{ old('surname', $user->surname) }}" required maxlength="100">
                         <div class="invalid-feedback">Nieprawidłowe nazwisko!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="email" class="form-label">E-mail</label>
-                        <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user->email) }}">
+                        <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user->email) }}" required maxlength="120">
                         <div class="invalid-feedback">Nieprawidłowy adres e-mail!</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="birthdate" class="form-label">Data urodzenia</label>
-                        <input id="birthdate" name="birthdate" type="date" class="form-control @error('birthdate') is-invalid @enderror" value="{{ old('birthdate', $user->birthdate) }}">
+                        <input id="birthdate" name="birthdate" type="date" class="form-control @error('birthdate') is-invalid @enderror" value="{{ old('birthdate', $user->birthdate) }}" required min="1920-01-01">
                         <div class="invalid-feedback">Nieprawidłowa data urodzenia!</div>
                     </div>
 
@@ -50,13 +50,13 @@
 
                     <div class="form-group mb-2">
                         <label for="phone" class="form-label">Telefon</label>
-                        <input id="phone" name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $user->phone) }}">
-                        <div class="invalid-feedback">Nieprawidłowy numer telefonu!</div>
+                        <input id="phone" name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $user->phone) }}" required pattern="\d{9,11}">
+                        <div class="invalid-feedback">Nieprawidłowy numer telefonu! Numer telefonu powinien mieć od 9 do 11 cyfr.</div>
                     </div>
 
                     <div class="form-group mb-2">
                         <label for="role_id" class="form-label">Rola</label>
-                        <select id="role_id" name="role_id" class="form-select @error('role_id') is-invalid @enderror">
+                        <select id="role_id" name="role_id" class="form-select @error('role_id') is-invalid @enderror" required>
                             <option value="">Wybierz rolę</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->role_id }}" @if (old('role_id', $user->role_id) == $role->role_id) selected @endif>{{ $role->name }}</option>
@@ -67,7 +67,7 @@
 
                     <div class="form-group mb-2">
                         <label for="category_id" class="form-label">Kategoria</label>
-                        <select id="category_id" name="category_id" class="form-select @error('category_id') is-invalid @enderror">
+                        <select id="category_id" name="category_id" class="form-select @error('category_id') is-invalid @enderror" required>
                             <option value="">Wybierz kategorię</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->category_id }}" @if (old('category_id', $user->category_id) == $category->category_id) selected @endif>{{ $category->name }}</option>
@@ -78,7 +78,7 @@
 
                     <div class="form-group mb-2">
                         <label for="sport_id" class="form-label">Sport</label>
-                        <select id="sport_id" name="sport_id" class="form-select @error('sport_id') is-invalid @enderror">
+                        <select id="sport_id" name="sport_id" class="form-select @error('sport_id') is-invalid @enderror" required>
                             <option value="">Wybierz sport</option>
                             @foreach ($sports as $sport)
                                 <option value="{{ $sport->sport_id }}" @if (old('sport_id', $user->sport_id) == $sport->sport_id) selected @endif>{{ $sport->name }}</option>
@@ -89,7 +89,7 @@
 
                     <div class="form-group mb-2">
                         <label for="approved" class="form-label">Zatwierdzony</label>
-                        <select id="approved" name="approved" class="form-select @error('approved') is-invalid @enderror">
+                        <select id="approved" name="approved" class="form-select @error('approved') is-invalid @enderror" required>
                             <option value="0" @if (old('approved', $user->approved) == '0') selected @endif>Nie</option>
                             <option value="1" @if (old('approved', $user->approved) == '1') selected @endif>Tak</option>
                         </select>
@@ -98,8 +98,8 @@
 
                     <div class="form-group mb-2">
                         <label for="photo" class="form-label">Zdjęcie</label>
-                        <input id="photo" name="photo" type="file" class="form-control @error('photo') is-invalid @enderror">
-                        <div class="invalid-feedback">Nieprawidłowe zdjęcie!</div>
+                        <input id="photo" name="photo" type="file" class="form-control @error('photo') is-invalid @enderror" accept="image/*">
+                        <div class="invalid-feedback">Nieprawidłowe zdjęcie! Maksymalny rozmiar pliku to 5MB.</div>
                     </div>
 
                     <div class="text-center mt-4 mb-4">

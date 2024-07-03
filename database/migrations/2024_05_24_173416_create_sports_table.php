@@ -10,7 +10,7 @@ class CreateSportsTable extends Migration
     {
         Schema::create('sports', function (Blueprint $table) {
             $table->id('sport_id');
-            $table->string('name');
+            $table->string('name', 100)->unique();
             $table->timestamps();
         });
     }

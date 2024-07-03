@@ -35,19 +35,20 @@ class TrainerController extends Controller
 
     public function editStatus($training_id, $user_id)
 {
+    $trainingUser = TrainingUser::where('training_id', $training_id)
+    ->where('user_id', $user_id)
+    ->firstOrFail();
     $training = Training::findOrFail($training_id);
     $user = User::findOrFail($user_id);
     $maxPoints = $training->max_points;
 
-    return view('trainer.editStatus', compact('training', 'user', 'maxPoints'));
+    return view('trainer.editStatus', compact('training', 'user', 'maxPoints', 'trainingUser'));
 }
 
 public function updateStatus(Request $request, $training_id, $user_id)
 {
-    // Pobierz maksymalną liczbę punktów dla treningu
     $maxPoints = Training::findOrFail($training_id)->max_points;
 
-    // Walidacja danych wejściowych
     $statusRules = '';
     if ($request->status === 'obecność') {
         $statusRules = 'required|in:obecność';
@@ -55,35 +56,30 @@ public function updateStatus(Request $request, $training_id, $user_id)
         $statusRules = 'required|in:nieobecność usprawiedliwiona,nieobecność nieusprawiedliwiona';
     }
 
-    // Walidacja danych wejściowych
     $validatedData = $request->validate([
         'status' => $statusRules,
         'points' => [
             'required',
             'integer',
-            'min:' . ($request->status === 'obecność' ? '0' : '-5'), // Minimalna wartość 0 dla obecności, -5 dla nieobecności
-            'max:' . $maxPoints, // Maksymalna wartość max_points dla obecności i nieobecności
+            'min:' . ($request->status === 'obecność' ? '0' : '-5'), // minimalna wartość pkt: 0 dla obecności, -5 dla nieobecności
+            'max:' . $maxPoints, 
         ],
     ]);
 
-    // Znajdź uczestnika treningu
     $trainingUser = DB::table('training_user')
         ->where('training_id', $training_id)
         ->where('user_id', $user_id)
         ->first();
 
     if ($trainingUser) {
-        // Oblicz punkty do aktualizacji
         $newPoints = $validatedData['points'];
 
-        // Ustaw punkty na 0 dla "nieobecność usprawiedliwiona" i -5 dla "nieobecność nieusprawiedliwiona"
         if ($validatedData['status'] == 'nieobecność usprawiedliwiona') {
             $newPoints = 0;
         } elseif ($validatedData['status'] == 'nieobecność nieusprawiedliwiona') {
             $newPoints = -5;
         }
 
-        // Aktualizacja statusu i punktów uczestnika treningu
         DB::table('training_user')
             ->where('training_id', $training_id)
             ->where('user_id', $user_id)
@@ -92,7 +88,6 @@ public function updateStatus(Request $request, $training_id, $user_id)
                 'points' => $newPoints,
             ]);
 
-        // Jeśli status jest "obecność", dodaj punkty do użytkownika
         if ($validatedData['status'] == 'obecność') {
             $user = User::findOrFail($user_id);
             $user->points += $newPoints;
@@ -117,11 +112,11 @@ public function updateStatus(Request $request, $training_id, $user_id)
         $user = Auth::user();
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'birthdate' => 'required|date',
-            'phone' => 'required|string|max:255',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', 
+            'name' => 'required|string|max:100',
+            'surname' => 'required|string|max:100',
+            'birthdate' => 'required|date|after_or_equal:1920-01-01',
+            'phone' => 'required|string|max:11|min:9',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ]);
 
         $user->update([
@@ -159,11 +154,11 @@ public function createTraining()
 public function storeTraining(Request $request)
 {
     $request->validate([
-        'description' => 'required|string|max:255',
-        'date' => 'required|date',
-        'start_time' => 'required|date_format:H:i',
-        'end_time' => 'required|date_format:H:i|after:start_time',
-        'max_points' => 'required|integer',
+       'description' => 'required|string|max:500',
+            'date' => 'required|date|after_or_equal:2024-01-01',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'max_points' => 'nullable|integer|min:0|max:200',
     ]);
 
     $training = new Training();
@@ -187,11 +182,11 @@ public function trainingEdit($training_id)
     public function trainingUpdate(Request $request, $training_id)
     {
         $validatedData = $request->validate([
-            'description' => 'required|string',
-            'date' => 'required|date',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'max_points' => 'nullable|integer|min:0',
+            'description' => 'required|string|max:500',
+            'date' => 'required|date|after_or_equal:2024-01-01',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'max_points' => 'nullable|integer|min:0|max:200',
         ]);
 
         if (strtotime($validatedData['start_time']) >= strtotime($validatedData['end_time'])) {

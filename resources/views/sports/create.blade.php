@@ -19,9 +19,8 @@
 
                     <div class="form-group mb-2">
                         <label for="name" class="form-label">Nazwa sportu</label>
-                        <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
+                        <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required maxlength="100">
                         <div class="invalid-feedback">Nieprawidłowy opis!</div>
-
                     </div>
                     
                     <div class="text-center mt-4 mb-4">

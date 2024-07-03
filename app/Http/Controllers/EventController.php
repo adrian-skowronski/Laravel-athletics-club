@@ -11,7 +11,8 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::orderBy('date','desc')->paginate(5);
+        $events = Event::withCount('users')->paginate(5);
+
         return view('events.index', compact('events'));
     }
 
@@ -30,14 +31,14 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:200',
-            'required_category_id' => 'required|string|max:100',
+            'name' => 'required|string|max:100',
+            'required_category_id' => 'required|exists:categories,category_id',
             'age_from' => 'required|integer|min:0',
             'age_to' => 'required|integer|min:' . $request->input('age_from'),
-            'description' => 'required|string|max:500',
-            'date' => 'required|date',
+            'description' => 'string|max:500',
+            'date' => 'required|date|after_or_equal:2024-01-01',
             'start_hour' => 'required',
-            'max_participants' => 'required|integer|min:3',
+            'max_participants' => 'required|integer|min:3|max:299',
         ]);
 
         if ($this->checkDateConflict($validatedData['date'])) {
@@ -65,14 +66,14 @@ class EventController extends Controller
         $categories = Category::all();
 
         $validatedData = $request->validate([
-            'name' => 'required|string|max:200',
-            'required_category_id' => 'required|string|max:100',
+            'name' => 'required|string|max:100',
+            'required_category_id' => 'required|exists:categories,category_id',
             'age_from' => 'required|integer|min:0',
             'age_to' => 'required|integer|min:' . $request->input('age_from'),
-            'description' => 'required|string|max:500',
-            'date' => 'required|date',
+            'description' => 'string|max:500',
+            'date' => 'required|date|after_or_equal:2024-01-01',
             'start_hour' => 'required',
-            'max_participants' => 'required|integer|min:3',
+            'max_participants' => 'required|integer|min:3|max:299',
         ]);
 
         if ($this->checkDateConflict($validatedData['date'])) {
@@ -103,6 +104,9 @@ class EventController extends Controller
             return redirect()->back()->withErrors(['error' => 'Sportowiec nie spełnia wymagań kategorii dla tego wydarzenia.']);
         }
 
+        if ($event->users()->where('user_id', $user->user_id)->exists()) {
+            return redirect()->back()->withErrors(['error' => 'Sportowiec jest już zapisany na to wydarzenie.']);
+        }
         $event->users()->attach($user->user_id);
 
         return redirect()->back()->with('success', 'Sportowiec został zapisany na wydarzenie.');

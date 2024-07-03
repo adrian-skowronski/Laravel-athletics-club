@@ -11,9 +11,12 @@
         <div class="row mt-3 mb-3">
             <h1>Lista treningów</h1>
         </div>
-        <div class="row mb-3 mt-3 p-3 d-flex justify-content-center">
-            <a href="{{ route('trainings.create') }}" class="btn btn-primary" style="width: auto; white-space: nowrap;">Dodaj nowy trening</a>
-        </div>
+        <div class="row mb-3 mt-3">
+    <div class="col d-flex justify-content-center">
+        <a href="{{ route('trainings.create') }}" class="btn btn-primary">Dodaj nowy trening</a>
+    </div>
+</div>
+
         <div class="row">
             <table class="table table-hover table-striped">
                 <thead>
@@ -25,7 +28,8 @@
                         <th scope="col">Sport</th>
                         <th scope="col">Trener</th>
                         <th scope="col">Max. pkt</th>
-                        <th scope="col">Akcje</th>
+                        <th scope="col">Edytuj</th>
+                        <th scope="col">Usuń</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,8 +43,10 @@
                             <td>{{ $training->trainer->name }} {{ $training->trainer->surname }}</a></td>                           
                             <td>{{ $training->max_points }}</td>
                             <td>
-                                <a href="{{ route('trainings.edit', $training->training_id) }}" class="btn btn-warning">Edycja</a>
-                                <form method="POST" action="{{ route('trainings.destroy', $training->training_id) }}" style="display:inline;">
+                                <a href="{{ route('trainings.edit', $training->training_id) }}" class="btn btn-warning">Edytuj</a>
+</td>
+<td>
+                                <form method="POST" action="{{ route('trainings.destroy', $training->training_id) }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć?')">Usuń</button>

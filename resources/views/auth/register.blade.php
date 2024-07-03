@@ -38,7 +38,7 @@
         <!-- Birthdate -->
         <div class="mt-4">
             <x-input-label for="birthdate" :value="__('Data urodzenia')" class="text-black"/>
-            <x-text-input id="birthdate" class="block mt-1 w-full" type="date" name="birthdate" :value="old('birthdate')" required autocomplete="birthdate" />
+            <x-text-input id="birthdate" class="block mt-1 w-full" type="date" name="birthdate" :value="old('birthdate')" required autocomplete="birthdate" min="1920-01-01" />
             <x-input-error :messages="$errors->get('birthdate')" class="mt-2" />
         </div>
 

@@ -31,12 +31,12 @@ class TrainingController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'description' => 'required|string|max:200',
-            'date' => 'required|date',
+            'description' => 'required|string|max:500',
+            'date' => 'required|date|after_or_equal:2024-01-01',
             'start_time' => 'required|date_format:H:i',
             'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
             'trainer_id' => 'required|exists:users,user_id',
-            'max_points' => 'nullable|integer|min:0',
+            'max_points' => 'nullable|integer|min:0|max:200',
         ]);
 
         if ($this->checkDateConflict($validatedData['date'])) {
@@ -51,18 +51,19 @@ class TrainingController extends Controller
     {
         $training = Training::findOrFail($training_id);
         $trainers = User::where('role_id', 2)->get();
+        
         return view('trainings.edit', compact('training', 'trainers'));
     }
 
     public function update(Request $request, $training_id)
     {
         $validatedData = $request->validate([
-            'description' => 'required|string',
-            'date' => 'required|date',
-            'start_time' => 'required',
-            'end_time' => 'required',
+            'description' => 'required|string|max:500',
+            'date' => 'required|date|after_or_equal:2024-01-01',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
             'trainer_id' => 'required|exists:users,user_id',
-            'max_points' => 'nullable|integer|min:0',
+            'max_points' => 'nullable|integer|min:0|max:200',
         ]);
 
         if (strtotime($validatedData['start_time']) >= strtotime($validatedData['end_time'])) {

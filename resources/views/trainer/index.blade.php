@@ -4,7 +4,19 @@
 <body>
     @include('shared.navbar')
     
+    
     <div class="container mt-5">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="user-info col-sm mb-5">
         <div class="row">
         <div class="col-sm">
@@ -24,14 +36,16 @@
                 </div>
                 
                 <div class="col-sm">
-                @if(Auth::user()->photo)
-                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User Photo" style="max-width: 250px; max-height: 250px;">
-                    @else
-                        <div class="mt-5">
-                        <i>Brak wgranego zdjęcia użytkownika.</i>
-                        </div>
-                    @endif
+    @if(Auth::user()->photo)
+        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User Photo" class="user-photo">
+    @else
+        <div class="mt-5">
+            <i>Brak wgranego zdjęcia użytkownika.</i>
+        </div>
+    @endif
 </div>
+
+
 <div class="col-sm"></div>
 </div>
 <div class="mt-5">
@@ -45,7 +59,9 @@
                     <th scope="col">Do</th>
                     <th scope="col">Sport</th>
                     <th scope="col">Max. pkt</th>
-                    <th>Akcje</th>
+                    <th scope="col">Pokaż uczestników</th>
+                    <th scope="col">Edytuj</th>
+                    <th scope="col">Usuń</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,8 +75,12 @@
                     <td>{{ $training->max_points }}</td>
                     <td>
                         <a href="{{ route('trainer.viewParticipants', $training->training_id) }}" class="btn btn-primary">Pokaż uczestników</a>
+</td>
+<td>
                         <a href="{{ route('trainer.editTraining', $training->training_id) }}" class="btn btn-warning">Edycja</a>
-                                <form method="POST" action="{{ route('trainer.trainingDestroy', $training->training_id) }}" style="display:inline;">
+</td>
+<td>
+                        <form method="POST" action="{{ route('trainer.trainingDestroy', $training->training_id) }}" >
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć?')">Usuń</button>
