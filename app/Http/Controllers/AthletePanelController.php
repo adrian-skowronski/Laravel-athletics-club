@@ -1,13 +1,11 @@
 <?php
 namespace App\Http\Controllers;
-use Khill\Lavacharts\Configs\DataTable;
-use Khill\Lavacharts\Lavacharts;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\EventUser;
+use App\Models\TrainingUser;
 
 class AthletePanelController extends Controller
 {
@@ -18,20 +16,18 @@ class AthletePanelController extends Controller
         $birthdate = Carbon::parse(Auth::user()->birthdate);
         $age = $birthdate->age;
 
-        $trainings = DB::table('training_user')
-        ->join('trainings', 'training_user.training_id', '=', 'trainings.training_id')
+        $trainings = TrainingUser::join('trainings', 'training_user.training_id', '=', 'trainings.training_id')
         ->join('users', 'trainings.trainer_id', '=', 'users.user_id')
         ->where('training_user.user_id', $user->user_id)
-        ->select('trainings.*', 'users.name as trainer_name', 'users.surname as trainer_surname', 'training_user.status', 'training_user.points')
-        ->orderBy('date', 'desc')
+        ->select('training_user.*', 'trainings.*', 'users.name as trainer_name', 'users.surname as trainer_surname')
+        ->orderBy('trainings.date', 'desc')
         ->paginate(5);
 
-        $allTrainings = DB::table('training_user')
-        ->join('trainings', 'training_user.training_id', '=', 'trainings.training_id')
+        $allTrainings = TrainingUser::join('trainings', 'training_user.training_id', '=', 'trainings.training_id')
         ->join('users', 'trainings.trainer_id', '=', 'users.user_id')
         ->where('training_user.user_id', $user->user_id)
-        ->select('trainings.*', 'users.name as trainer_name', 'users.surname as trainer_surname', 'training_user.status', 'training_user.points')
-        ->orderBy('date', 'desc')
+        ->select('training_user.*', 'trainings.*', 'users.name as trainer_name', 'users.surname as trainer_surname')
+        ->orderBy('trainings.date', 'desc')
         ->get();
     
         /////////////

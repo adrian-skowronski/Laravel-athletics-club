@@ -72,17 +72,16 @@
                     <td>{{ $training->status }}</td>
                     <td>{{ $training->points }}</td>
                     <td>
-                    @if(!Carbon\Carbon::parse($training->date . ' ' . $training->end_time)->lt(Carbon\Carbon::now()))
-                    <form method="POST" action="{{ route('athlete.removeTraining') }}">
-                    @csrf
-                    @method('DELETE')
-                    <input type="hidden" name="training_id" value="{{ $training->training_id }}">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz się wypisać z treningu?')">Wypisz się</button>
-                </form>
-    @else
-    Nie można wypisać
-
-    @endif
+                    @can('athlete.removeTraining', $training)
+    <form method="POST" action="{{ route('athlete.removeTraining') }}">
+        @csrf
+        @method('DELETE')
+        <input type="hidden" name="training_id" value="{{ $training->training_id }}">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz się wypisać z treningu?')">Wypisz się</button>
+    </form>
+@else
+    <span>Akcja niedostępna</span>
+@endcan
                     </td>
                 </tr>
                 @endforeach

@@ -6,6 +6,7 @@ use App\Models\EventUser;
 use App\Models\User;
 use App\Models\Event;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class EventUserController extends Controller
 {
@@ -13,14 +14,6 @@ class EventUserController extends Controller
     {
         $eventUsers = EventUser::with('event', 'user')->paginate(5);
     
-        $now = Carbon::now();
-        
-        foreach ($eventUsers as $eventUser) {
-            $eventDate = Carbon::parse($eventUser->event->date);
-            $eventUser->canRemove = $now->lt($eventDate);
-            $eventUser->canAssignPoints = $now->gt($eventDate);
-            $eventUser->points = $eventUser->points; 
-        }
     
         return view('event-user.index', compact('eventUsers'));
     }
@@ -30,6 +23,9 @@ class EventUserController extends Controller
     public function edit($event_user_id)
     {
         $eventUser = EventUser::findOrFail($event_user_id);
+        if (Gate::denies('assign-points', $eventUser)) {
+            return redirect()->route('event-user.index')->with('error', 'Nie masz uprawnień do przypisania punktów przed dniem wydarzenia.');
+        }
         $events = Event::all();
         $users = User::all();
         return view('event-user.edit', compact('eventUser', 'events', 'users'));
@@ -39,13 +35,12 @@ class EventUserController extends Controller
 {
     $eventUser = EventUser::findOrFail($event_user_id);
 
-    $user = User::findOrFail($request->user_id);
+    $user = User::findOrFail($eventUser->user_id);
 
 
     $request->validate([
-        'event_id' => 'required|exists:events,event_id',
-        'user_id' => 'required|exists:users,user_id',
-        'points' => 'required|integer',
+        
+        'points' => 'required|integer|in:0,5,10,20,30,40',
     ]);
 
     $newPoints = $user->points + $request->points;
@@ -53,8 +48,7 @@ class EventUserController extends Controller
     $user->update(['points' => $newPoints]);
 
     $eventUser->update([
-        'event_id' => $request->event_id,
-        'user_id' => $request->user_id,
+       
         'points' => $request->points,
     ]);
 
@@ -64,11 +58,7 @@ class EventUserController extends Controller
 public function destroy($event_user_id)
 {
     $eventUser = EventUser::findOrFail($event_user_id);
-
-    $now = Carbon::now();
-    $eventDate = Carbon::parse($eventUser->event->date);
-
-    if ($now->gte($eventDate)) {
+    if (Gate::denies('remove-athlete', $eventUser)) {
         return redirect()->route('event-user.index')->with('error', 'Akcja niedostępna, nie można wypisać zawodnika w dniu zawodów lub po.');
     }
 
@@ -76,6 +66,7 @@ public function destroy($event_user_id)
 
     return redirect()->route('event-user.index')->with('success', 'Przypisanie usunięte.');
 }
+
 
     public function selectEvent()
     {

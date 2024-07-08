@@ -38,8 +38,10 @@ class TrainerController extends Controller
     $trainingUser = TrainingUser::where('training_id', $training_id)
     ->where('user_id', $user_id)
     ->firstOrFail();
+    
     $training = Training::findOrFail($training_id);
     $user = User::findOrFail($user_id);
+    
     $maxPoints = $training->max_points;
 
     return view('trainer.editStatus', compact('training', 'user', 'maxPoints', 'trainingUser'));
@@ -154,12 +156,18 @@ public function createTraining()
 public function storeTraining(Request $request)
 {
     $request->validate([
-       'description' => 'required|string|max:500',
-            'date' => 'required|date|after_or_equal:2024-01-01',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
-            'max_points' => 'nullable|integer|min:0|max:200',
+        'description' => 'required|string|max:500',
+        'date' => 'required|date|after_or_equal:2024-01-01',
+        'start_time' => 'required|date_format:H:i',
+        'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+        'max_points' => 'nullable|integer|min:0|max:200',
     ]);
+
+    $trainer_id = Auth::id();
+
+    if ($this->hasTrainingOnDate($trainer_id, $request->date)) {
+        return redirect()->back()->withErrors(['date' => 'W tym dniu masz już zaplanowany trening.'])->withInput();
+    }
 
     $training = new Training();
     $training->description = $request->description;
@@ -167,11 +175,12 @@ public function storeTraining(Request $request)
     $training->start_time = $request->start_time;
     $training->end_time = $request->end_time;
     $training->max_points = $request->max_points;
-    $training->trainer_id = Auth::id(); 
+    $training->trainer_id = $trainer_id;
     $training->save();
 
     return redirect()->route('trainer.index')->with('success', 'Trening został dodany pomyślnie.');
 }
+
 
 public function trainingEdit($training_id)
     {
@@ -180,26 +189,28 @@ public function trainingEdit($training_id)
     }
 
     public function trainingUpdate(Request $request, $training_id)
-    {
-        $validatedData = $request->validate([
-            'description' => 'required|string|max:500',
-            'date' => 'required|date|after_or_equal:2024-01-01',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
-            'max_points' => 'nullable|integer|min:0|max:200',
-        ]);
+{
+    $validatedData = $request->validate([
+        'description' => 'required|string|max:500',
+        'date' => 'required|date|after_or_equal:2024-01-01',
+        'start_time' => 'required',
+        'end_time' => ['required', 'after:start_time'],
+        'max_points' => 'nullable|integer|min:0|max:200',
+    ]);
 
-        if (strtotime($validatedData['start_time']) >= strtotime($validatedData['end_time'])) {
-            return redirect()->back()->withErrors(['end_time' => 'Czas zakończenia musi być późniejszy niż czas rozpoczęcia.'])->withInput();}
-        
-       if ($this->checkDateConflict($validatedData['date'])) {
-            return redirect()->back()->withErrors(['date' => 'W tym dniu jest już zaplanowane wydarzenie.'])->withInput();
-        }
+    $trainer_id = Auth::id();
 
-        $training = Training::findOrFail($training_id);
-        $training->update($validatedData);
-        return redirect()->route('trainer.index');
+    $currentTraining = Training::findOrFail($training_id);
+
+    if ($currentTraining->date !== $validatedData['date'] && $this->hasTrainingOnDate($trainer_id, $validatedData['date'])) {
+        return redirect()->back()->withErrors(['date' => 'W tym dniu masz już zaplanowany trening.'])->withInput();
     }
+
+    $currentTraining->update($validatedData);
+
+    return redirect()->route('trainer.index');
+}
+
 
     public function trainingDestroy($training_id)
     {
@@ -221,6 +232,13 @@ public function trainingEdit($training_id)
             ->with('success', 'Uczestnik został wypisany z treningu.');
     }
     
+    private function hasTrainingOnDate($trainer_id, $date)
+{
+    return Training::where('trainer_id', $trainer_id)
+                   ->where('date', $date)
+                   ->exists();
+}
+
 
 }
 

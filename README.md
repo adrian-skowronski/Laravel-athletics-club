@@ -1,1 +1,1 @@
-Projekt aplikacji internetowej do obsługi klubu sportowego (lekkoatletycznego), która oferuje panel selekcjonera, trenera i sportowca.
+Projekt aplikacji internetowej do obsługi klubu sportowego (lekkoatletycznego), która oferuje panel administratora (selekcjonera), trenera i sportowca.

@@ -33,10 +33,8 @@
             </div>
             <div class="mb-3">
     <label for="points" class="form-label">Punkty</label>
-    <input type="number" id="points" name="points" class="form-control" value="{{ old('points', $user->status == 'nieobecność usprawiedliwiona' ? '0' : ($user->status == 'nieobecność nieusprawiedliwiona' ? '-5' : $user->points ?? '')) }}" required max="{{ $training->max_points }}" pattern="\d*" {{ $user->status == 'nieobecność usprawiedliwiona' || $user->status == 'nieobecność nieusprawiedliwiona' ? 'readonly' : '' }}>
-    @if ($user->status == 'nieobecność usprawiedliwiona' || $user->status == 'nieobecność nieusprawiedliwiona')
-        <input type="hidden" name="points" value="{{ $user->status == 'nieobecność usprawiedliwiona' ? '0' : '-5' }}">
-    @endif
+    <input type="number" id="points" name="points" class="form-control" value="{{ old('points', $user->status == 'nieobecność usprawiedliwiona' ? '0' : ($user->status == 'nieobecność nieusprawiedliwiona' ? '-5' : $trainingUser->points ?? '')) }}" required max="{{ $training->max_points }}" pattern="\d*" {{ $user->status == 'nieobecność usprawiedliwiona' || $user->status == 'nieobecność nieusprawiedliwiona' ? 'readonly' : '' }}>
+   
     <div class="invalid-feedback">Punkty muszą być liczbą całkowitą z zakresu od 0 do {{ $training->max_points }}.</div>
 </div>
             <div class="d-flex justify-content-center">

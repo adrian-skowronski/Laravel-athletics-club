@@ -48,7 +48,7 @@ use Illuminate\Support\Facades\Schema;
                     </td>
                 </tr>
                 <tr>
-                    <td>Wydarzenia</td>
+                    <td>Wydarzenia i zapisywanie sportowców</td>
                     <td>
                         <a href="{{ route('events.index') }}" class="btn btn-primary">Przejdź do zasobu</a>
                     </td>

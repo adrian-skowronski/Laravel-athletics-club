@@ -41,22 +41,22 @@
                             <td>{{ $eventUser->user->name }} {{ $eventUser->user->surname }}</td>
                             <td>{{ $eventUser->points ?? 'Brak' }}</td>
                             <td>
-                                @if($eventUser->canRemove)
-                                    <form method="POST" action="{{ route('event-user.destroy', $eventUser->event_user_id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz wypisać sportowca z wydarzenia?')">Wypisz sportowca</button>
-                                    </form>
-                                @else
-                                    <span>Akcja niedostępna</span>
-                                @endif
+                            @can('remove-athlete', $eventUser)
+                <form method="POST" action="{{ route('event-user.destroy', $eventUser->event_user_id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz wypisać sportowca z wydarzenia?')">Wypisz sportowca</button>
+                </form>
+            @else
+                <span>Akcja niedostępna</span>
+            @endcan
                             </td>
                             <td>
-                                @if($eventUser->canAssignPoints)
-                                    <a href="{{ route('event-user.edit', $eventUser->event_user_id) }}" class="btn btn-primary">Edytuj</a>
-                                @else
-                                    <span>Akcja niedostępna</span>
-                                @endif
+                            @can('assign-points', $eventUser)
+        <a href="{{ route('event-user.edit', $eventUser->event_user_id) }}" class="btn btn-primary">Przyznaj punkty</a>
+    @else
+        <span>Akcja niedostępna</span>
+    @endcan
                             </td>
                         </tr>
                     @empty

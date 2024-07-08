@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Training;
@@ -33,8 +34,8 @@ class TrainingController extends Controller
         $validatedData = $request->validate([
             'description' => 'required|string|max:500',
             'date' => 'required|date|after_or_equal:2024-01-01',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'start_time' => 'required',
+            'end_time' => ['required', 'after:start_time'],
             'trainer_id' => 'required|exists:users,user_id',
             'max_points' => 'nullable|integer|min:0|max:200',
         ]);
@@ -43,15 +44,19 @@ class TrainingController extends Controller
             return redirect()->back()->withErrors(['date' => 'W tym dniu jest już zaplanowane wydarzenie.'])->withInput();
         }
 
+        if ($this->hasTrainingOnDate($validatedData['trainer_id'], $validatedData['date'])) {
+            return redirect()->back()->withErrors(['date' => 'Ten trener ma już zaplanowany trening na ten dzień.'])->withInput();
+        }
+
         Training::create($validatedData);
-        return redirect()->route('trainings.index');
+        return redirect()->route('trainings.index')->with('success', 'Trening został dodany pomyślnie.');
     }
 
     public function edit($training_id)
     {
         $training = Training::findOrFail($training_id);
         $trainers = User::where('role_id', 2)->get();
-        
+
         return view('trainings.edit', compact('training', 'trainers'));
     }
 
@@ -60,29 +65,28 @@ class TrainingController extends Controller
         $validatedData = $request->validate([
             'description' => 'required|string|max:500',
             'date' => 'required|date|after_or_equal:2024-01-01',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'start_time' => 'required',
+            'end_time' => ['required', 'after:start_time'],
             'trainer_id' => 'required|exists:users,user_id',
             'max_points' => 'nullable|integer|min:0|max:200',
         ]);
 
-        if (strtotime($validatedData['start_time']) >= strtotime($validatedData['end_time'])) {
-            return redirect()->back()->withErrors(['end_time' => 'Czas zakończenia musi być późniejszy niż czas rozpoczęcia.'])->withInput();}
-        
-       if ($this->checkDateConflict($validatedData['date'])) {
-            return redirect()->back()->withErrors(['date' => 'W tym dniu jest już zaplanowane wydarzenie.'])->withInput();
+        $training = Training::findOrFail($training_id);
+
+        if (($training->date !== $validatedData['date'] || $training->trainer_id !== $validatedData['trainer_id']) &&
+            $this->hasTrainingOnDate($validatedData['trainer_id'], $validatedData['date'])) {
+            return redirect()->back()->withErrors(['date' => 'Ten trener ma już zaplanowany trening na ten dzień.'])->withInput();
         }
 
-        $training = Training::findOrFail($training_id);
         $training->update($validatedData);
-        return redirect()->route('trainings.index');
+        return redirect()->route('trainings.index')->with('success', 'Trening został zaktualizowany pomyślnie.');
     }
 
     public function destroy($training_id)
     {
         $training = Training::findOrFail($training_id);
         $training->delete();
-        return redirect()->route('trainings.index');
+        return redirect()->route('trainings.index')->with('success', 'Trening został usunięty pomyślnie.');
     }
 
     public function signUp($training_id)
@@ -113,5 +117,12 @@ class TrainingController extends Controller
     private function checkDateConflict($date)
     {
         return Event::where('date', $date)->exists();
+    }
+
+    private function hasTrainingOnDate($trainer_id, $date)
+    {
+        return Training::where('trainer_id', $trainer_id)
+                       ->where('date', $date)
+                       ->exists();
     }
 }

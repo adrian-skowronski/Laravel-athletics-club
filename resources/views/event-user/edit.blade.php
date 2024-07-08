@@ -24,8 +24,8 @@
                             @csrf
                             @method('PUT')
                             
-                            <input type="hidden" name="event_id" value="{{ $eventUser->event_id }}">
-                            <input type="hidden" name="user_id" value="{{ $eventUser->user_id }}">
+                            <!-- <input type="hidden" name="event_id" value="{{ $eventUser->event_id }}"> -->
+                            <!-- <input type="hidden" name="user_id" value="{{ $eventUser->user_id }}"> -->
                             
                             <div class="form-group">
                                 <label for="points">Punkty</label>

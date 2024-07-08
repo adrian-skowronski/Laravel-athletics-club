@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TrainingUser;
+use Illuminate\Support\Facades\Gate;
 
 class AthleteController extends Controller
 {
@@ -25,8 +26,8 @@ class AthleteController extends Controller
             'required',
             'date',
             'after_or_equal:1920-01-01', 
-        ],            'phone' => 'required|string|max:11',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', 
+        ],            'phone' => 'required|string|max:11|min:9',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', 
         ]);
 
         $user->update([
@@ -57,11 +58,11 @@ public function removeFromTraining(Request $request)
     $trainingId = $request->input('training_id');
 
     $participant = TrainingUser::where('user_id', $user->user_id)
-                               ->where('training_id', $trainingId)
-                               ->first();
-
-    if (!$participant) {
-        return redirect()->back()->with('error', 'Nie jesteś zapisany na ten trening.');
+    ->where('training_id', $trainingId)
+    ->first();
+        
+    if (Gate::denies('athlete.removeTraining', $participant)) {
+        return redirect()->route('athlete.panel')->with('error', 'Nie masz uprawnień do wypisania się z tego treningu.');
     }
 
     $participant->delete();
