@@ -2,9 +2,9 @@ Projekt aplikacji internetowej do obsługi klubu sportowego (lekkoatletycznego),
 
 Zachęcam do zapoznania się z obszerną **dokumentacją projektu: [DOKUMENTACJA.pdf](https://github.com/user-attachments/files/17667938/DOKUMENTACJA.pdf)**
 
-Wykorzystywane technologie: **PHP, Laravel, Boostrap, MariaDB**.
+Wykorzystywane technologie: **PHP, Laravel, Bootstrap, MariaDB**.
 
-**Głównymi celami projektu było doskonalenie umiejętności działań bazodanowanych (w tym operacji CRUD), walidacji danych po stronie backendu i frontendu, a także zadbanie o aspekty wizualne (UI, UX) i optymalizację kodu**.
+**Głównymi celami projektu były: doskonalenie umiejętności działań bazodanowanych (w tym operacji CRUD), walidacji danych po stronie backendu i frontendu, a także zadbanie o aspekty wizualne (UI, UX) i optymalizację kodu**.
 
 Przykładowe widoki z aplikacji:
 
