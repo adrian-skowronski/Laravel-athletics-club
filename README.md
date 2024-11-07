@@ -16,5 +16,5 @@ Przykładowe widoki z aplikacji:
 
 ![image](https://github.com/user-attachments/assets/a5b97555-8419-403b-bf5d-9dcca60bd202)
 
-**Zapraszam do zostawienia feedbacku i rozwijania projektu!**
+**Zapraszam do zostawienia feedbacku i rozwijania projektu!** Z pewnością wciąż wiele można poprawić - zwłaszcza jakość i organizację kodu :) 
 
